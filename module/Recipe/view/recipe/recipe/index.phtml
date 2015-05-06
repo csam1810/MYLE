@@ -1,0 +1,30 @@
+<?php
+ // module/Album/view/album/album/index.phtml:
+
+ $title = 'My recipes';
+ $this->headTitle($title);
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <p>
+     <a href="<?php echo $this->url('recipe', array('action'=>'add'));?>">Add new recipe</a>
+ </p>
+
+ <table class="table">
+ <tr>
+     <th>Title</th>
+     <th>Instructions</th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($recipes as $recipe) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($recipe->title);?></td>
+     <td><?php echo $this->escapeHtml($recipe->instructions);?></td>
+     <td>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'edit', 'id' => $recipe->id));?>">Edit</a>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'delete', 'id' => $recipe->id));?>">Delete</a>
+     </td>
+ </tr>
+ <?php endforeach; ?>
+ </table>
