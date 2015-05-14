@@ -1,7 +1,7 @@
 <?php
  // module/Album/view/album/album/index.phtml:
 
- $title = 'My recipes';
+ $title = 'Latest recipes';
  $this->headTitle($title);
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
@@ -20,7 +20,7 @@
  <tr>
      <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
      <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
-     <td><?php echo $this->escapeHtml($recipe->difficultyID);?></td>
+     <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
      <td>
          <a href="<?php echo $this->url('recipe',
              array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>

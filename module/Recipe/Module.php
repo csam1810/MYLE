@@ -11,6 +11,10 @@ namespace Recipe;
  use Recipe\Model\IngredientTable;
  use Recipe\Model\IngredientsOfRecipe;
  use Recipe\Model\IngredientsOfRecipeTable;
+ use Recipe\Model\WeightUnits;
+ use Recipe\Model\WeightUnitsTable;
+ use Recipe\Model\Difficulties;
+ use Recipe\Model\DifficultiesTable;
  use Zend\Db\ResultSet\ResultSet;
  use Zend\Db\TableGateway\TableGateway;
 
@@ -73,6 +77,28 @@ namespace Recipe;
                      $resultSetPrototype = new ResultSet();
                      $resultSetPrototype->setArrayObjectPrototype(new IngredientsOfRecipe());
                      return new TableGateway('IngredientsOfRecipe', $dbAdapter, null, $resultSetPrototype);
+                 },
+                 'Recipe\Model\WeightUnitsTable' =>  function($sm) {
+                     $tableGateway = $sm->get('WeightUnitsTableGateway');
+                     $table = new WeightUnitsTable($tableGateway);
+                     return $table;
+                 },
+                 'WeightUnitsTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new WeightUnits());
+                     return new TableGateway('WeightUnits', $dbAdapter, null, $resultSetPrototype);
+                 },
+                 'Recipe\Model\DifficultiesTable' =>  function($sm) {
+                     $tableGateway = $sm->get('DifficultiesTableGateway');
+                     $table = new DifficultiesTable($tableGateway);
+                     return $table;
+                 },
+                 'DifficultiesTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new Difficulties());
+                     return new TableGateway('Difficulties', $dbAdapter, null, $resultSetPrototype);
                  },
              ),
          );

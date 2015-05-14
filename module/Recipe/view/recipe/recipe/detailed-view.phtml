@@ -14,11 +14,11 @@
      <th>Weight Unit</th>
      <th>&nbsp;</th>
  </tr>
- <?php foreach ($ingredients as $ingredient) : ?>
+ <?php foreach ($ingredientsOfRecipe as $ingredient) : ?>
     <tr>
-         <td><?php echo $this->escapeHtml($ingredient->ingredientID);?></td>
+         <td><?php echo $this->escapeHtml($ingredientNames[$ingredient->ingredientID]);?></td>
          <td><?php echo $this->escapeHtml($ingredient->amount);?></td>
-         <td><?php echo $this->escapeHtml($ingredient->weightUnitID);?></td>
+         <td><?php echo $this->escapeHtml($weightUnits[$ingredient->weightUnitID]);?></td>
      </tr>
  <?php endforeach; ?>
  </table>
@@ -31,7 +31,7 @@
  <br>
  
  <h4>Difficulty:</h4>
- <?php echo $recipe->difficultyID; ?>
+ <?php echo $difficulty; ?>
  
  <h4>Duration:</h4>
  <?php echo $recipe->duration . " minutes"; ?>

@@ -24,7 +24,7 @@ namespace Recipe\Model;
          return $resultSet;
      }
 
-     public function getIngredient($ingredientID)
+     public function getIngredientName($ingredientID)
      {
          $ingredientID  = (int) $ingredientID;
          $rowset = $this->tableGateway->select(array('ingredientID' => $ingredientID));
@@ -32,7 +32,7 @@ namespace Recipe\Model;
          if (!$row) {
              throw new \Exception("Could not find row $ingredientID");
          }
-         return $row;
+         return $row->ingredientName;
      }
 
      public function saveIngredient(Ingredient $ingredient)
