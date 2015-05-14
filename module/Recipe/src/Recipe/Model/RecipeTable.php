@@ -25,13 +25,13 @@ namespace Recipe\Model;
          return $resultSet;
      }
 
-     public function getRecipe($id)
+     public function getRecipe($recipeID)
      {
-         $id  = (int) $id;
-         $rowset = $this->tableGateway->select(array('id' => $id));
+         $recipeID  = (int) $recipeID;
+         $rowset = $this->tableGateway->select(array('recipeID' => $recipeID));
          $row = $rowset->current();
          if (!$row) {
-             throw new \Exception("Could not find row $id");
+             throw new \Exception("Could not find row $recipeID");
          }
          return $row;
      }
@@ -40,23 +40,25 @@ namespace Recipe\Model;
      {
          $data = array(
              'instructions' => $recipe->instructions,
-             'title'  => $recipe->title,
+             'recipeName'  => $recipe->recipeName,
+             'duration' => $recipe->duration,
+             'difficultyID' => $recipe->difficultyID,
          );
 
-         $id = (int) $recipe->id;
+         $id = (int) $recipe->recipeID;
          if ($id == 0) {
              $this->tableGateway->insert($data);
          } else {
              if ($this->getRecipe($id)) {
-                 $this->tableGateway->update($data, array('id' => $id));
+                 $this->tableGateway->update($data, array('recipeID' => $recipeID));
              } else {
                  throw new \Exception('Recipe id does not exist');
              }
          }
      }
 
-     public function deleteRecipe($id)
+     public function deleteRecipe($recipeID)
      {
-         $this->tableGateway->delete(array('id' => (int) $id));
+         $this->tableGateway->delete(array('$recipeID' => (int) $recipeID));
      }
  }

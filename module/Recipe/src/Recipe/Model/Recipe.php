@@ -10,15 +10,19 @@ namespace Recipe\Model;
 
  class Recipe
  {
-     public $id;
-     public $title;
+     public $recipeID;
+     public $recipeName;
      public $instructions;
+     public $duration;
+     public $difficultyID;
 
      //AJ: this method is needed to work with Zend's TableGateway class
      public function exchangeArray($data)
      {
-         $this->id     = (!empty($data['id'])) ? $data['id'] : null;
+         $this->recipeID  = (!empty($data['recipeID'])) ? $data['recipeID'] : null;
+         $this->recipeName    = (!empty($data['recipeName'])) ? $data['recipeName'] : null;
          $this->instructions = (!empty($data['instructions'])) ? $data['instructions'] : null;
-         $this->title  = (!empty($data['title'])) ? $data['title'] : null;
+         $this->duration = (!empty($data['duration'])) ? $data['duration'] : null;
+         $this->difficultyID = (!empty($data['difficultyID'])) ? $data['difficultyID'] : null;
      }
  }

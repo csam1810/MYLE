@@ -11,19 +11,23 @@
 
  <table class="table">
  <tr>
-     <th>Title</th>
-     <th>Instructions</th>
+     <th>Recipe Name</th>
+     <th>Duration</th>
+     <th>Difficulty</th>
      <th>&nbsp;</th>
  </tr>
  <?php foreach ($recipes as $recipe) : ?>
  <tr>
-     <td><?php echo $this->escapeHtml($recipe->title);?></td>
-     <td><?php echo $this->escapeHtml($recipe->instructions);?></td>
+     <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
+     <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
+     <td><?php echo $this->escapeHtml($recipe->difficultyID);?></td>
      <td>
          <a href="<?php echo $this->url('recipe',
-             array('action'=>'edit', 'id' => $recipe->id));?>">Edit</a>
+             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
          <a href="<?php echo $this->url('recipe',
-             array('action'=>'delete', 'id' => $recipe->id));?>">Delete</a>
+             array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
      </td>
  </tr>
  <?php endforeach; ?>

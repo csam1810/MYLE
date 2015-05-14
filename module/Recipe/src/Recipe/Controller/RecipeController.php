@@ -14,6 +14,26 @@ namespace Recipe\Controller;
  class RecipeController extends AbstractActionController
  {
      protected $recipeTable;
+     protected $ingredientTable;
+     protected $ingredientsOfRecipeTable;
+     
+     public function getIngredientTable()
+     {
+         if (!$this->ingredientTable) {
+             $sm = $this->getServiceLocator();
+             $this->ingredientTable = $sm->get('Recipe\Model\IngredientTable');
+         }
+         return $this->ingredientTable;
+     }
+     
+     public function getIngredientsOfRecipeTable()
+     {
+         if (!$this->ingredientsOfRecipeTable) {
+             $sm = $this->getServiceLocator();
+             $this->ingredientsOfRecipeTable = $sm->get('Recipe\Model\IngredientsOfRecipeTable');
+         }
+         return $this->ingredientsOfRecipeTable;
+     }
      
      public function getRecipeTable()
      {
@@ -41,5 +61,11 @@ namespace Recipe\Controller;
 
      public function deleteAction()
      {
+     }
+     
+     public function detailedViewAction() {
+         $recipeID = (int) $this->params()->fromRoute('recipeID');
+         $ingredients = $this->getIngredientsOfRecipeTable()->getIngredientsForRecipe($recipeID);
+         return new ViewModel(array('recipe' => $this->getRecipeTable()->getRecipe($recipeID), 'ingredients' => $ingredients));
      }
  }
