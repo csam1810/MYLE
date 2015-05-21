@@ -96,7 +96,7 @@ namespace Recipe\Model;
                  'required' => true,
              ));
              
-             //TODO: add filter for difficulty ID!
+             //TODO: enough filtering for difficultyID?
 
              $this->inputFilter = $inputFilter;
          }

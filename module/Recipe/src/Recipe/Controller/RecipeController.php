@@ -95,11 +95,11 @@ namespace Recipe\Controller;
 
              if ($form->isValid()) {
                 $recipe->exchangeArray($form->getData());
-                echo "diff:".$form->getData()['difficultyID'];
-                $this->getRecipeTable()->saveRecipe($recipe);
-
+                //TODO: move following line (maybe to the validator in recipe.php?)
+                $recipe->difficultyID = $recipe->difficultyID['difficultyID'];
+                $id = $this->getRecipeTable()->saveRecipe($recipe);
                 // TODO: redirect to recipe detail view
-                return $this->redirect()->toRoute('recipe');
+                return $this->redirect()->toRoute('recipe', array('action' => 'detailedView', 'recipeID' => $id));
              }
          }
          return array('form' => $form);

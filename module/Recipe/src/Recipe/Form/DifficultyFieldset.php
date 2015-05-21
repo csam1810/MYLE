@@ -23,19 +23,18 @@ class DifficultyFieldset extends Fieldset {
         parent::__construct('difficultyID');
         
         $difficulties = $difficultiesTable->fetchAll();
+        
         $difficultyArray = array();
         foreach($difficulties as $difficulty) {
             $difficultyArray[$difficulty->difficultyID] = $difficulty->difficultyName;
         }
-        
-        var_dump($difficultyArray);
         
         $this->add(array(
              'name' => 'difficultyID',
              'type' => 'Zend\Form\Element\Select',
              'options' => array(
                  'label' => 'Difficulty',
-                 'value_options' => array($difficultyArray),
+                 'value_options' => $difficultyArray,
              ),
          ));
     }

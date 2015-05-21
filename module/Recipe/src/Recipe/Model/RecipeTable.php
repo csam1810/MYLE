@@ -9,8 +9,9 @@
 namespace Recipe\Model;
 
  use Zend\Db\TableGateway\TableGateway;
+ use Zend\Db\TableGateway\AbstractTableGateway;
 
- class RecipeTable
+ class RecipeTable extends AbstractTableGateway
  {
      protected $tableGateway;
 
@@ -48,6 +49,8 @@ namespace Recipe\Model;
          $id = (int) $recipe->recipeID;
          if ($id == 0) {
              $this->tableGateway->insert($data);
+             //set ID of newly inserted entity
+             $id = $this->tableGateway->lastInsertValue;
          } else {
              if ($this->getRecipe($id)) {
                  $this->tableGateway->update($data, array('recipeID' => $recipeID));
@@ -55,6 +58,7 @@ namespace Recipe\Model;
                  throw new \Exception('Recipe id does not exist');
              }
          }
+         return $id;
      }
 
      public function deleteRecipe($recipeID)
