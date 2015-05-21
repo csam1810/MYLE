@@ -10,6 +10,7 @@
      'controllers' => array(
          'invokables' => array(
              'Recipe\Controller\Recipe' => 'Recipe\Controller\RecipeController',
+             'DifficultyFieldset' => 'Recipe\Form\DifficultyFieldset',
          ),
      ),
      

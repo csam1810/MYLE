@@ -10,6 +10,7 @@ namespace Recipe\Controller;
 
  use Zend\Mvc\Controller\AbstractActionController;
  use Zend\View\Model\ViewModel;
+ use Recipe\Model\Recipe;
 
  class RecipeController extends AbstractActionController
  {
@@ -79,8 +80,29 @@ namespace Recipe\Controller;
          ));
      }
 
-     public function addAction()
+     public function createRecipeAction()
      {
+         $formManager = $this->getServiceLocator()->get('FormElementManager');
+         $form = $formManager->get('Recipe\Form\CreateRecipeForm');
+         
+         //$form->get('submit')->setValue('Add');
+
+         $request = $this->getRequest();
+         if ($request->isPost()) {
+             $recipe = new Recipe();
+             $form->setInputFilter($recipe->getInputFilter());
+             $form->setData($request->getPost());
+
+             if ($form->isValid()) {
+                $recipe->exchangeArray($form->getData());
+                echo "diff:".$form->getData()['difficultyID'];
+                $this->getRecipeTable()->saveRecipe($recipe);
+
+                // TODO: redirect to recipe detail view
+                return $this->redirect()->toRoute('recipe');
+             }
+         }
+         return array('form' => $form);
      }
 
      public function editAction()

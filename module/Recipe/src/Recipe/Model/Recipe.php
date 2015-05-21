@@ -8,13 +8,20 @@
 
 namespace Recipe\Model;
 
- class Recipe
+ use Zend\InputFilter\InputFilterAwareInterface;
+ use Zend\InputFilter\InputFilterInterface;
+ use Zend\InputFilter\InputFilter;
+
+
+ class Recipe implements InputFilterAwareInterface
  {
      public $recipeID;
      public $recipeName;
      public $instructions;
      public $duration;
      public $difficultyID;
+     
+     protected $inputFilter;
 
      //AJ: this method is needed to work with Zend's TableGateway class
      public function exchangeArray($data)
@@ -25,4 +32,81 @@ namespace Recipe\Model;
          $this->duration = (!empty($data['duration'])) ? $data['duration'] : null;
          $this->difficultyID = (!empty($data['difficultyID'])) ? $data['difficultyID'] : null;
      }
- }
+
+    public function getInputFilter() {
+         if (!$this->inputFilter) {
+             $inputFilter = new InputFilter();
+
+             $inputFilter->add(array(
+                 'name'     => 'id',
+                 'required' => true,
+                 'filters'  => array(
+                     array('name' => 'Int'),
+                 ),
+             ));
+
+             $inputFilter->add(array(
+                 'name'     => 'recipeName',
+                 'required' => true,
+                 'filters'  => array(
+                     array('name' => 'StripTags'),
+                     array('name' => 'StringTrim'),
+                 ),
+                 'validators' => array(
+                     array(
+                         'name'    => 'StringLength',
+                         'options' => array(
+                             'encoding' => 'UTF-8',
+                             'min'      => 3,
+                             'max'      => 255,
+                         ),
+                     ),
+                 ),
+             ));
+
+             $inputFilter->add(array(
+                 'name'     => 'instructions',
+                 'required' => true,
+                 'filters'  => array(
+                     array('name' => 'StripTags'),
+                     array('name' => 'StringTrim'),
+                 ),
+                 'validators' => array(
+                     array(
+                         'name'    => 'StringLength',
+                         'options' => array(
+                             'encoding' => 'UTF-8',
+                             'min'      => 1,
+                             'max'      => 5000,
+                         ),
+                     ),
+                 ),
+             ));
+             
+             $inputFilter->add(array(
+                 'name'     => 'duration',
+                 'required' => true,
+                 'filters'  => array(
+                     array('name' => 'Int'),
+                 ),
+             ));
+             
+             $inputFilter->add(array(
+                 'name'     => 'difficultyID',
+                 'required' => true,
+             ));
+             
+             //TODO: add filter for difficulty ID!
+
+             $this->inputFilter = $inputFilter;
+         }
+
+         return $this->inputFilter;
+
+    }
+
+    public function setInputFilter(InputFilterInterface $inputFilter) {
+        throw new \Exception("Not used");
+    }
+
+}

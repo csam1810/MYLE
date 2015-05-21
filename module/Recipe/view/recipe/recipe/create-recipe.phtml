@@ -1,0 +1,29 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+/**
+ * Description of create-recipe
+ *
+ * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
+ */
+
+ $title = 'Create new recipe';
+ $this->headTitle($title);
+
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <?php
+ $form->setAttribute('action', $this->url('recipe', array('action' => 'createRecipe')));
+ $form->prepare();
+
+ echo $this->form()->openTag($form);
+ echo $this->formCollection($form);
+ 
+ //could use  echo $this->formCollection($form); instead of all but the tag functions
+ echo $this->form()->closeTag();

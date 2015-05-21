@@ -15,11 +15,13 @@ namespace Recipe;
  use Recipe\Model\WeightUnitsTable;
  use Recipe\Model\Difficulties;
  use Recipe\Model\DifficultiesTable;
+ use Recipe\Form\DifficultyFieldset;
+ 
  use Zend\Db\ResultSet\ResultSet;
  use Zend\Db\TableGateway\TableGateway;
+ use Zend\ModuleManager\Feature\FormElementProviderInterface;
 
-
- class Module implements AutoloaderProviderInterface, ConfigProviderInterface
+ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, FormElementProviderInterface
  {
      public function getAutoloaderConfig()
      {
@@ -104,4 +106,17 @@ namespace Recipe;
          );
      }
 
- }
+    public function getFormElementConfig() {
+        return array(
+            'factories' => array(
+                'DifficultyFieldset' => function($sm) {
+                    $serviceLocator = $sm->getServiceLocator();
+                    $difficultyTable = $serviceLocator->get('Recipe\Model\DifficultiesTable');
+                    $fieldset = new DifficultyFieldset($difficultyTable);
+                    return $fieldset;
+                }
+            )
+        );
+    }
+
+}
