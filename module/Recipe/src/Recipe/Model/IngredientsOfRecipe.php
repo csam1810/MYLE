@@ -15,7 +15,6 @@ namespace Recipe\Model;
 
 class IngredientsOfRecipe {
     
-    public $ingredientsOfRecipeID;
     public $amount;
     public $weightUnitID;
     public $ingredientID;
@@ -24,7 +23,6 @@ class IngredientsOfRecipe {
     //AJ: this method is needed to work with Zend's TableGateway class
      public function exchangeArray($data)
      {
-         $this->ingredientsOfRecipeID  = (!empty($data['ingredientsOfRecipeID'])) ? $data['ingredientsOfRecipeID'] : null;
          $this->amount    = (!empty($data['amount'])) ? $data['amount'] : null;
          $this->weightUnitID = (!empty($data['weightUnitID'])) ? $data['weightUnitID'] : null;
          $this->ingredientID = (!empty($data['ingredientID'])) ? $data['ingredientID'] : null;

@@ -11,6 +11,7 @@ namespace Recipe\Controller;
  use Zend\Mvc\Controller\AbstractActionController;
  use Zend\View\Model\ViewModel;
  use Recipe\Model\Recipe;
+ use Recipe\Model\IngredientsOfRecipe;
 
  class RecipeController extends AbstractActionController
  {
@@ -98,7 +99,25 @@ namespace Recipe\Controller;
                 //TODO: move following line (maybe to the validator in recipe.php?)
                 $recipe->difficultyID = $recipe->difficultyID['difficultyID'];
                 $id = $this->getRecipeTable()->saveRecipe($recipe);
-                // TODO: redirect to recipe detail view
+                
+                foreach($form->get('ingredients') as $ingredientFieldset) {
+                    //TODO: name and id synonomously! CHANGE!
+                    $ingredient = new IngredientsOfRecipe();
+                    $ingredient->exchangeArray(array('amount' => $ingredientFieldset->get('ingredientAmount')->getValue(),
+                        'weightUnitID' => $ingredientFieldset->get('weightUnit')->get('unitName')->getValue(),
+                        'ingredientID' => $ingredientFieldset->get('ingredientName')->get('ingredientName')->getValue(),
+                        'recipeID' => $id));
+                    
+                    /*
+                    echo 'amount: '.$ingredient->amount.'\n';
+                    echo 'weight unit id: '.$ingredient->weightUnitID.'\n';
+                    echo 'recipe id: '.$ingredient->recipeID.'\n';
+                    echo 'ingredientID : '.$ingredient->ingredientID.'\n';
+                     * 
+                     */
+                    $this->getIngredientsOfRecipeTable()->saveIngredientsOfRecipe($ingredient);
+                }
+               
                 return $this->redirect()->toRoute('recipe', array('action' => 'detailedView', 'recipeID' => $id));
              }
          }
@@ -127,7 +146,7 @@ namespace Recipe\Controller;
          $ingredientWeightUnits = array();
          //get all ingredient names for all ids
          foreach($ingredientsOfRecipe as $ingredient) {
-             $ingredients[$ingredient->ingredientsOfRecipeID] = $ingredient;
+             $ingredients[$ingredient->ingredientID] = $ingredient;
              $ingredientID = $ingredient->ingredientID;
              $ingredientNames[$ingredientID] = $this->getIngredientTable()->getIngredientName($ingredientID);
              if(!isset($ingredientWeightUnits[$ingredient->weightUnitID])) {

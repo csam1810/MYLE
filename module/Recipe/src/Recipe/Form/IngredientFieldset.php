@@ -13,32 +13,41 @@
  */
 namespace Recipe\Form;
 
-use Recipe\Model\IngredientTable;
 use Zend\Form\Fieldset;
+use \Recipe\Model\IngredientsOfRecipe;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class IngredientFieldset extends Fieldset {
+class IngredientFieldset extends Fieldset{
     
-    public function __construct(IngredientTable $ingredientTable)
+    public function __construct()
     {
-        parent::__construct('ingredients');
-        
-        $ingredients = $ingredientTable->fetchAll();
-        
-        $ingredientsArray = array();
-        foreach($ingredients as $ingredient) {
-            $ingredientsArray[$ingredient->ingredientID] = $ingredient->ingredientName;
-        }
-        
+         parent::__construct('ingredients');
+         
+         $this->setHydrator(new ClassMethodsHydrator(false));
+         $this->setObject(new IngredientsOfRecipe());
+
+    }
+    
+    public function init() {
         $this->add(array(
-             'name' => 'ingredients',
-             'type' => 'Zend\Form\Element\Select',
+             'name' => 'ingredientName',
+             'type' => 'IngredientNameFieldset',
+         ));
+         
+         $this->add(array(
+             'name' => 'ingredientAmount',
+             'type' => 'Text',
              'options' => array(
-                 'label' => 'Ingredient',
-                 'value_options' => $ingredientsArray,
+                 'label' => 'Amount: ',
              ),
-            'attributes' => array(
-                 'class' => 'form-control',
-             ),
+             'attributes' => array(
+                 'class' => 'form-horizontal',
+             )
+         ));
+         
+         $this->add(array(
+             'name' => 'weightUnit',
+             'type' => 'WeightUnitFieldset',
          ));
     }
 }

@@ -15,12 +15,18 @@ namespace Recipe\Form;
 
 use Recipe\Model\DifficultiesTable;
 use Zend\Form\Fieldset;
+use Recipe\Model\Difficulties;
+
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class DifficultyFieldset extends Fieldset {
     
     public function __construct(DifficultiesTable $difficultiesTable)
     {
         parent::__construct('difficultyID');
+        
+        $this->setHydrator(new ClassMethodsHydrator(false));
+        $this->setObject(new Difficulties());
         
         $difficulties = $difficultiesTable->fetchAll();
         

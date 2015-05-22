@@ -15,34 +15,16 @@
 namespace Recipe\Form;
 
 use Zend\Form\Form;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+
 
 class CreateRecipeForm extends Form {
     
      public function __construct($name = null, $options = array())
      {
          parent::__construct($name, $options);
-     }
-    
-     public function addIngredients() {
-         $this->add(array(
-             'name' => 'ingredient',
-             'type' => 'IngredientFieldset',
-         ));
-         $this->add(array(
-             'name' => 'ingredientAmount',
-             'type' => 'Text',
-             'options' => array(
-                 'label' => 'Amount',
-             ),
-             'attributes' => array(
-                 'class' => 'form-control',
-             )
-         ));
-         $this->add(array(
-             'name' => 'weightUnit',
-             'type' => 'WeightUnitFieldset',
-         ));
          
+         $this->setHydrator(new ClassMethodsHydrator());
      }
     
      public function init() {
@@ -73,7 +55,23 @@ class CreateRecipeForm extends Form {
              ),
          ));
          
-         $this->addIngredients();
+         $this->add(array(
+             'type' => 'Zend\Form\Element\Collection',
+             'name' => 'ingredients',
+             'options' => array(
+                 'label' => 'Please choose ingredients for this recipe',
+                 'count' => 3,
+                 'should_create_template' => true,
+                 'allow_add' => true,
+                 'target_element' => array(
+                     'type' => 'IngredientFieldset',
+                 ),
+                 'attributes' => array(
+                 'class' => 'form-horizontal',
+                )
+             ),
+             
+         ));
          
          $this->add(array(
              'name' => 'duration',

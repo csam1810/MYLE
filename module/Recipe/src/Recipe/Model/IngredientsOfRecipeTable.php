@@ -30,4 +30,20 @@ namespace Recipe\Model;
          $rowset = $this->tableGateway->select(array('recipeID' => $recipeID));
          return $rowset;         
      }
+     
+     public function saveIngredientsOfRecipe(IngredientsOfRecipe $ingredients)
+     {
+         $data = array(
+             'amount' => $ingredients->amount,
+             'weightUnitID'  => $ingredients->weightUnitID,
+             'recipeID' => $ingredients->recipeID,
+             'ingredientID' => $ingredients->ingredientID,
+         );
+
+         //TODO: for now just insert without checking of element exists
+         $this->tableGateway->insert($data);
+         //set ID of newly inserted entity
+         $id = $this->tableGateway->lastInsertValue;
+         return $id;
+     }
  }
