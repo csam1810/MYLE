@@ -1,0 +1,23 @@
+<?php
+ // module/Login/view/login/login/add.phtml:
+
+ $form->setAttribute('action', $this->url('login', array('action' => 'add')));
+ $form->prepare();
+
+ echo $this->form()->openTag($form);
+ ?>
+ <center>
+ <table>
+    <tr><td><h2>Login</h2></td></tr>
+    <tr><td><?php echo $this->formRow($form->get('loginid')); ?> </td></tr>
+    <tr><td><?php echo $this->formRow($form->get('loginpassword')); ?> </td></tr>
+    <tr><td><?php echo $this->formSubmit($form->get('loginsubmit')); ?> </td></tr>
+    </table>
+ </center>
+ <?php echo $this->form()->closeTag();
+ 
+ 
+ 
+ 
+ 
+ 

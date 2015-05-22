@@ -1,0 +1,26 @@
+<?php
+ // module/CreateAccount/view/createAccount/createAccount/add.phtml:
+
+ $form->setAttribute('action', $this->url('createaccount', array('action' => 'add')));
+ $form->prepare();
+
+ echo $this->form()->openTag($form);
+ ?>
+ <center>
+ <table>
+    <tr><td><h2>Create an account</h2></td></tr>
+    <tr><td><?php echo $this->formRow($form->get('createAccountid')); ?> </td></tr>
+    <tr><td><?php echo $this->formRow($form->get('displayName')); ?> </td></tr>
+    <tr><td><?php echo $this->formRow($form->get('phoneNo')); ?> </td></tr>
+    <tr><td><?php echo $this->formRow($form->get('createAccountpassword')); ?> </td></tr>
+    <tr><td><?php echo $this->formRow($form->get('repassword')); ?> </td></tr>
+    <tr><td><?php echo $this->formSubmit($form->get('createAccountsubmit')); ?> </td></tr>
+    </table>
+ </center>
+ <?php echo $this->form()->closeTag();
+ 
+ 
+ 
+ 
+ 
+ 
