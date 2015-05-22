@@ -46,5 +46,6 @@ class DifficultyFieldset extends Fieldset {
                  'class' => 'form-control',
              ),
          ));
+        
     }
 }

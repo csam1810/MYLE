@@ -62,15 +62,17 @@ class CreateRecipeForm extends Form {
                  'label' => 'Please choose ingredients for this recipe',
                  'count' => 3,
                  'should_create_template' => true,
+                 'template_placeholder' => '__ingredientGroup__',
                  'allow_add' => true,
                  'target_element' => array(
                      'type' => 'IngredientFieldset',
                  ),
-                 'attributes' => array(
-                 'class' => 'form-horizontal',
-                )
+                 
              ),
-             
+             'attributes' => array(
+                 'class' => 'form-horizontal',
+                 'id' => 'ingredientGroupFieldset',
+                ),
          ));
          
          $this->add(array(

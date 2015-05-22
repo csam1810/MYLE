@@ -29,6 +29,23 @@
  echo "<br>";
  echo $this->formCollection($form->get('ingredients'));
  echo "<br>";
+ ?>
+ <button onclick="return addIngredientFieldset()">I need more ingredients!</button>
+ <br>
+ <br>
+ <script>
+     function addIngredientFieldset() {
+         var currentCount = $('form > fieldset > fieldset').length;
+         var template = $('form > fieldset > span').data('template');
+         template = template.replace(/__ingredientGroup__/g, currentCount);
+         //$('form > fieldset > fieldset')
+         $("#ingredientGroupFieldset").append(template);
+
+         return false;
+     }
+ </script>
+ 
+ <?php
  echo $this->formRow($form->get('instructions'));
  echo "<br>";
  echo $this->formRow($form->get('duration'));
