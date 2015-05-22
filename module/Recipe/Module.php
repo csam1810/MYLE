@@ -16,6 +16,8 @@ namespace Recipe;
  use Recipe\Model\Difficulties;
  use Recipe\Model\DifficultiesTable;
  use Recipe\Form\DifficultyFieldset;
+ use Recipe\Form\IngredientFieldset;
+ use Recipe\Form\WeightUnitFieldset;
  
  use Zend\Db\ResultSet\ResultSet;
  use Zend\Db\TableGateway\TableGateway;
@@ -114,7 +116,19 @@ namespace Recipe;
                     $difficultyTable = $serviceLocator->get('Recipe\Model\DifficultiesTable');
                     $fieldset = new DifficultyFieldset($difficultyTable);
                     return $fieldset;
-                }
+                },
+                'IngredientFieldset' => function($sm) {
+                    $serviceLocator = $sm->getServiceLocator();
+                    $ingredientTable = $serviceLocator->get('Recipe\Model\IngredientTable');
+                    $fieldset = new IngredientFieldset($ingredientTable);
+                    return $fieldset;
+                },
+                'WeightUnitFieldset' => function($sm) {
+                    $serviceLocator = $sm->getServiceLocator();
+                    $weightUnitTable = $serviceLocator->get('Recipe\Model\WeightUnitsTable');
+                    $fieldset = new WeightUnitFieldset($weightUnitTable);
+                    return $fieldset;
+                },
             )
         );
     }

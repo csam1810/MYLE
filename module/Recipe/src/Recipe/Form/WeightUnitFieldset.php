@@ -7,34 +7,35 @@
  */
 
 /**
- * Description of DifficultySelect
+ * Description of WeightUnitFieldset
  *
  * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
  */
+
 namespace Recipe\Form;
 
-use Recipe\Model\DifficultiesTable;
+use Recipe\Model\WeightUnitsTable;
 use Zend\Form\Fieldset;
 
-class DifficultyFieldset extends Fieldset {
+class WeightUnitFieldset extends Fieldset{
     
-    public function __construct(DifficultiesTable $difficultiesTable)
+    public function __construct(WeightUnitsTable $weightUnitsTable)
     {
-        parent::__construct('difficultyID');
+        parent::__construct('weightUnits');
         
-        $difficulties = $difficultiesTable->fetchAll();
+        $weightUnits = $weightUnitsTable->fetchAll();
         
-        $difficultyArray = array();
-        foreach($difficulties as $difficulty) {
-            $difficultyArray[$difficulty->difficultyID] = $difficulty->difficultyName;
+        $weightUnitsArray = array();
+        foreach($weightUnits as $weightUnit) {
+            $weightUnitsArray[$weightUnit->unitID] = $weightUnit->unitName;
         }
         
         $this->add(array(
-             'name' => 'difficultyID',
+             'name' => 'weightUnits',
              'type' => 'Zend\Form\Element\Select',
              'options' => array(
-                 'label' => 'Difficulty',
-                 'value_options' => $difficultyArray,
+                 'label' => 'Weight Unit',
+                 'value_options' => $weightUnitsArray,
              ),
             'attributes' => array(
                  'class' => 'form-control',

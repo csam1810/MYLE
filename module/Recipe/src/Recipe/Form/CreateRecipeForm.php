@@ -18,7 +18,34 @@ use Zend\Form\Form;
 
 class CreateRecipeForm extends Form {
     
-    public function init() {
+     public function __construct($name = null, $options = array())
+     {
+         parent::__construct($name, $options);
+     }
+    
+     public function addIngredients() {
+         $this->add(array(
+             'name' => 'ingredient',
+             'type' => 'IngredientFieldset',
+         ));
+         $this->add(array(
+             'name' => 'ingredientAmount',
+             'type' => 'Text',
+             'options' => array(
+                 'label' => 'Amount',
+             ),
+             'attributes' => array(
+                 'class' => 'form-control',
+             )
+         ));
+         $this->add(array(
+             'name' => 'weightUnit',
+             'type' => 'WeightUnitFieldset',
+         ));
+         
+     }
+    
+     public function init() {
          $this->add(array(
              'name' => 'id',
              'type' => 'Hidden',
@@ -29,16 +56,24 @@ class CreateRecipeForm extends Form {
              'options' => array(
                  'label' => 'Recipe Name',
              ),
+             'attributes' => array(
+                 'class' => 'form-control',
+             )
          ));
          $this->add(array(
              'name' => 'instructions',
-             'type' => 'Text',
+             'type' => 'Textarea',
              'options' => array(
                  'label' => 'Instructions',
              ),
+             'attributes' => array(
+                 'class' => 'form-control',
+                 'rows' => '10',
+                 'cols' => '100',
+             ),
          ));
          
-         echo "TODO: ingredients!";
+         $this->addIngredients();
          
          $this->add(array(
              'name' => 'duration',
@@ -46,12 +81,14 @@ class CreateRecipeForm extends Form {
              'options' => array(
                  'label' => 'Duration',
              ),
+             'attributes' => array(
+                 'class' => 'form-control',
+             )
          ));
          
          $this->add(array(
              'name' => 'difficultyID',
              'type' => 'DifficultyFieldset',
-             
          ));
          
          $this->add(array(
@@ -60,6 +97,7 @@ class CreateRecipeForm extends Form {
              'attributes' => array(
                  'value' => 'Create Recipe!',
                  'id' => 'submitbutton',
+                 
              ),
          ));
     }

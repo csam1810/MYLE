@@ -22,8 +22,20 @@
  $form->setAttribute('action', $this->url('recipe', array('action' => 'createRecipe')));
  $form->prepare();
 
+ echo "<br>";
  echo $this->form()->openTag($form);
- echo $this->formCollection($form);
- 
- //could use  echo $this->formCollection($form); instead of all but the tag functions
+ echo $this->formHidden($form->get('id'));
+ echo $this->formRow($form->get('recipeName'));
+ echo "<br>";
+ echo $this->formCollection($form->get('ingredient'));
+ echo $this->formRow($form->get('ingredientAmount'));
+ echo $this->formCollection($form->get('weightUnit'));
+ echo "<br>";
+ echo $this->formRow($form->get('instructions'));
+ echo "<br>";
+ echo $this->formRow($form->get('duration'));
+ echo "<br>";
+ echo $this->formCollection($form->get('difficultyID'));
+ echo "<br>";
+ echo $this->formSubmit($form->get('submit'));
  echo $this->form()->closeTag();

@@ -7,34 +7,34 @@
  */
 
 /**
- * Description of DifficultySelect
+ * Description of IngredientFieldset
  *
  * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
  */
 namespace Recipe\Form;
 
-use Recipe\Model\DifficultiesTable;
+use Recipe\Model\IngredientTable;
 use Zend\Form\Fieldset;
 
-class DifficultyFieldset extends Fieldset {
+class IngredientFieldset extends Fieldset {
     
-    public function __construct(DifficultiesTable $difficultiesTable)
+    public function __construct(IngredientTable $ingredientTable)
     {
-        parent::__construct('difficultyID');
+        parent::__construct('ingredients');
         
-        $difficulties = $difficultiesTable->fetchAll();
+        $ingredients = $ingredientTable->fetchAll();
         
-        $difficultyArray = array();
-        foreach($difficulties as $difficulty) {
-            $difficultyArray[$difficulty->difficultyID] = $difficulty->difficultyName;
+        $ingredientsArray = array();
+        foreach($ingredients as $ingredient) {
+            $ingredientsArray[$ingredient->ingredientID] = $ingredient->ingredientName;
         }
         
         $this->add(array(
-             'name' => 'difficultyID',
+             'name' => 'ingredients',
              'type' => 'Zend\Form\Element\Select',
              'options' => array(
-                 'label' => 'Difficulty',
-                 'value_options' => $difficultyArray,
+                 'label' => 'Ingredient',
+                 'value_options' => $ingredientsArray,
              ),
             'attributes' => array(
                  'class' => 'form-control',
