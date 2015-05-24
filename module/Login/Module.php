@@ -47,10 +47,9 @@ namespace Login;
                      $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                      $resultSetPrototype = new ResultSet();
                      $resultSetPrototype->setArrayObjectPrototype(new Login());
-                     return new TableGateway('Login', $dbAdapter, null, $resultSetPrototype);
+                     return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                  },
              ),
          );
      }
-
  }

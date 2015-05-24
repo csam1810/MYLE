@@ -49,15 +49,33 @@
              $form->setData($request->getPost());
 
              if ($form->isValid()) {
-                 $createAccount->exchangeArray($form->getData());
-                 $this->getCreateaccountTable()->saveCreateaccount($createAccount);
-
-                 // Redirect to list of createAccount
-                 return $this->redirect()->toRoute('createaccount');
+                 $uid = (string)$form->get('createAccountid')->getValue();
+                 $dn = (string)$form->get('displayName')->getValue();
+                 $pn = (string)$form->get('phoneNo')->getValue();
+                 $p = (string)$form->get('createAccountpassword')->getValue();
+                 $rp = (string)$form->get('repassword')->getValue();
+                 $rs = getResultSet("user");
+                 foreach ($rs as $row) {
+                      if(strcmp($uid,(string)$row['userID'])==0){
+                            echo "<script>alert('Error: User id dose exist!');</script>";
+                            goto out;
+                      }
+                 }
+                 if(strcmp($p,$rp)==0){
+                    executeQuery("INSERT INTO user(userID, displayName, phoneNo, password) VALUES ('" . $uid . "','" . $dn . "','" . $pn . "','" . $p . "')");
+                    echo "<script>alert('User successfully created!');</script>";
+                    return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+                 }
+                 else{
+                     echo "<script>alert('Error: Password and Re-Password do not match!');</script>";
+                 }
              }
-         }
-         return array('form' => $form);
+             out:
+        }
+        
+        return array('form' => $form);
      }
+             
  }
 
  //...

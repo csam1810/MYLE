@@ -17,58 +17,53 @@
  use Login\Form\LoginForm;       // <-- Add this import
 //...
 
- class LoginController extends AbstractActionController
+class LoginController extends AbstractActionController
  {
-     protected $loginTable;
+    protected $loginTable;
      
-     public function getLoginTable()
-     {
+    public function getLoginTable()
+    {
          if (!$this->loginTable) {
              $sm = $this->getServiceLocator();
              $this->loginTable = $sm->get('Login\Model\LoginTable');
          }
          return $this->loginTable;
-     }
+    }
      
-     public function indexAction()
-     {
+    public function indexAction()
+    {
          return new ViewModel(array(
              'users' => $this->getLoginTable()->fetchAll(),
          ));
-     }
-  
-     public function addAction()
-     {
-         
+    }
+    
+    public function addAction(){
          $form = new LoginForm();
          $form->get('loginsubmit')->setValue('Login');
-
          $request = $this->getRequest();
+         
          if ($request->isPost()) {
              $login = new Login();
              $form->setInputFilter($login->getInputFilter());
              $form->setData($request->getPost());
              
              if ($form->isValid()) {
-                 
-                 $loginid = $form->get('loginid')->getValue();
-                 $loginpassword = $form->get('loginpassword')->getValue();
-                 
-                 foreach ($users as $user){
-                     if(strcmp($loginid,$user->ID)==0 && strcmp($loginpassword,$user->Password)==0){
-                        return $this->redirect()->toRoute('album', array('action' => 'recipe'));
-                     }
+                 $uid = (string)$form->get('loginid')->getValue();
+                 $p = (string)$form->get('loginpassword')->getValue();
+               
+                 $rs = getResultSet("user");
+                 foreach ($rs as $row) {
+                      if(strcmp($uid,(string)$row['userID'])==0 && strcmp($p,(string)$row['password'])==0){
+                            return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+                      }
                  }
-                 
-                // $login->exchangeArray($form->getData());
-                // $this->getLoginTable()->saveLogin($login);
-
-                 // Redirect to login
-                 return $this->redirect()->toRoute('login');
+                 echo "<script>alert('Error: Wrong user id or password!');</script>";
+                  //  return $this->redirect()->toRoute('login'); 
              }
-         }
-         return array('form' => $form);
-     }
- }
+        }
+        return array('form' => $form);
+    }
+ 
+}
 
  //...

@@ -19,37 +19,22 @@
          $this->add(array(
              'name' => 'createAccountid',
              'type' => 'Text',
-             'options' => array(
-                 'label' => 'Email',
-             ),
          ));
          $this->add(array(
              'name' => 'displayName',
              'type' => 'Text',
-             'options' => array(
-                 'label' => 'Diplay Name',
-             ),
          ));
          $this->add(array(
              'name' => 'phoneNo',
              'type' => 'Text',
-             'options' => array(
-                 'label' => 'PhoneNo',
-             ),
          ));
          $this->add(array(
              'name' => 'createAccountpassword',
              'type' => 'Password',
-             'options' => array(
-                 'label' => 'Password',
-             ),
          ));
          $this->add(array(
              'name' => 'repassword',
              'type' => 'Password',
-             'options' => array(
-                 'label' => 'Re_Password',
-             ),
          ));
          $this->add(array(
              'name' => 'createAccountsubmit',

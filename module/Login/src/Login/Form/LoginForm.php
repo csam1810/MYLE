@@ -19,17 +19,11 @@
          $this->add(array(
              'name' => 'loginid',
              'type' => 'Text',
-             'options' => array(
-                 'label' => 'Email',
-             ),
          ));
       
          $this->add(array(
              'name' => 'loginpassword',
              'type' => 'Password',
-             'options' => array(
-                 'label' => 'Password',
-             ),
          ));
          
          $this->add(array(

@@ -8,11 +8,12 @@
  ?>
  <center>
  <table>
-    <tr><td><h2>Login</h2></td></tr>
-    <tr><td><?php echo $this->formRow($form->get('loginid')); ?> </td></tr>
-    <tr><td><?php echo $this->formRow($form->get('loginpassword')); ?> </td></tr>
-    <tr><td><?php echo $this->formSubmit($form->get('loginsubmit')); ?> </td></tr>
-    </table>
+     <tr><td colspan="2"><h2>Login</h2></td></tr>
+    <tr><td>Email</td><td><?php echo $this->formRow($form->get('loginid')); ?> </td></tr>
+    <tr><td>Password</td><td><?php echo $this->formRow($form->get('loginpassword')); ?> </td></tr>
+    <tr><td style="text-align: right;" colspan="2"><?php echo $this->formSubmit($form->get('loginsubmit')); ?> </td></tr>
+ </table>
+ <br/>or <a href="<?php echo $this->url('createaccount', array('action'=>'add'));?>">Create an account.</a>
  </center>
  <?php echo $this->form()->closeTag();
  

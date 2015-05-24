@@ -39,10 +39,10 @@ namespace Createaccount\Model;
      public function saveCreateAccount(Createaccount $createAccount)
      {
          $data = array(
-             'ID' => $createAccount->id,
-             'DisplayName'  => $createAccount->displayName,
-             'PhoneNo' => $createAccount->phoneNo,
-             'Password'  => $createAccount->password,
+             'userID' => $createAccount->id,
+             'displayName'  => $createAccount->displayName,
+             'phoneNo' => $createAccount->phoneNo,
+             'password'  => $createAccount->password,
          );
 
          $id = $createAccount->id;
