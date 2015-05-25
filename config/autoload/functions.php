@@ -1,8 +1,35 @@
 <?php
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
-//use \Zend_Db;
-//require_once 'Zend/Db/Adapter/Pdo/Mysql.php';
+
+session_start();
+if(isset( $_SESSION['user'])){
+      $_SESSION['user'] = "";
+}
+
+function login($uid){
+    $_SESSION['user'] = $uid;
+}
+
+function logout(){
+    $_SESSION['user'] = "";
+}
+
+function getLoginDisplayName(){
+    if($_SESSION['user']==""){
+        return "";
+    }
+    else{
+         $db = getAdapter();
+         $statement = $db->createStatement("SELECT displayName FROM user WHERE userID='" . $loginUser . "'");
+         $result = $statement->execute();
+         $rs = new ResultSet;
+         $rs->initialize($result);
+         foreach ($rs as $row) {
+                return $row['displayName'];
+         }
+    }
+}
 
 function getAdapter(){
     $db = new Zend\Db\Adapter\Adapter(array(
@@ -21,6 +48,7 @@ function executeQuery($sql){
     $db = getAdapter();
     $statement = $db->createStatement($sql);
     $result = $statement->execute();
+    return $result;
 }
 
 function getResultSet($tbn){

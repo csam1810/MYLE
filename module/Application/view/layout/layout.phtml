@@ -1,4 +1,9 @@
-<?php echo $this->doctype(); ?>
+<?php echo $this->doctype();
+
+if(@$_POST['logout']){ 
+    logout();
+}
+?>
 
 <html lang="en">
     <head>
@@ -40,6 +45,24 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                     </ul>
+           <?php
+               
+                $u = getLoginDisplayName();
+              
+                if($u==""): ?>
+                    <span style="position: absolute;right: 30px;top: 15px;">
+                         <a href="<?php echo $this->url('login', array('action'=>'add'));?>">Login</a>
+                    </span>      
+           <?php else:  ?>
+                    <span style="position: absolute;right: 30px;top: 15px; color: white;">
+                       
+                        <form action="<?php echo $this->url('recipe', array('action'=>'index'));?>" method="POST">
+                             Hi <?php echo $u; ?> &nbsp;&nbsp;<input type="submit" name="logout" Value="Logout" style="background-color: transparent;color: blue;border: none;">
+                        </form>
+                    </span>
+           <?php endif; ?>
+                  
+                    
                 </div><!--/.nav-collapse -->
             </div>
         </nav>

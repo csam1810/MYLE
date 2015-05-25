@@ -54,11 +54,12 @@ class LoginController extends AbstractActionController
                  $rs = getResultSet("user");
                  foreach ($rs as $row) {
                       if(strcmp($uid,(string)$row['userID'])==0 && strcmp($p,(string)$row['password'])==0){
-                            return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+                          login($uid);
+                         
+                          return $this->redirect()->toRoute('recipe', array('action' => 'index'));
                       }
                  }
                  echo "<script>alert('Error: Wrong user id or password!');</script>";
-                  //  return $this->redirect()->toRoute('login'); 
              }
         }
         return array('form' => $form);

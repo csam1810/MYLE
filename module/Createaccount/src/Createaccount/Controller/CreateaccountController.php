@@ -64,6 +64,7 @@
                  if(strcmp($p,$rp)==0){
                     executeQuery("INSERT INTO user(userID, displayName, phoneNo, password) VALUES ('" . $uid . "','" . $dn . "','" . $pn . "','" . $p . "')");
                     echo "<script>alert('User successfully created!');</script>";
+                    login($uid);
                     return $this->redirect()->toRoute('recipe', array('action' => 'index'));
                  }
                  else{

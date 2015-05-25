@@ -3,7 +3,7 @@
 
  $form->setAttribute('action', $this->url('login', array('action' => 'add')));
  $form->prepare();
-
+ echo "<script>alert('".$_SESSION['user']."');</script>";
  echo $this->form()->openTag($form);
  ?>
  <center>
