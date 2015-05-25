@@ -46,9 +46,9 @@ if(@$_POST['logout']){
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                     </ul>
            <?php
-               
+                
                 $u = getLoginDisplayName();
-              
+
                 if($u==""): ?>
                     <span style="position: absolute;right: 30px;top: 15px;">
                          <a href="<?php echo $this->url('login', array('action'=>'add'));?>">Login</a>
@@ -60,6 +60,7 @@ if(@$_POST['logout']){
                              Hi <?php echo $u; ?> &nbsp;&nbsp;<input type="submit" name="logout" Value="Logout" style="background-color: transparent;color: blue;border: none;">
                         </form>
                     </span>
+                   
            <?php endif; ?>
                   
                     

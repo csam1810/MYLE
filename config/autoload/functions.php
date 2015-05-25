@@ -3,7 +3,7 @@ use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\ResultSet;
 
 session_start();
-if(isset( $_SESSION['user'])){
+if(!isset($_SESSION['user'])){
       $_SESSION['user'] = "";
 }
 
@@ -21,7 +21,7 @@ function getLoginDisplayName(){
     }
     else{
          $db = getAdapter();
-         $statement = $db->createStatement("SELECT displayName FROM user WHERE userID='" . $loginUser . "'");
+         $statement = $db->createStatement("SELECT displayName FROM user WHERE userID='" . $_SESSION['user'] . "'");
          $result = $statement->execute();
          $rs = new ResultSet;
          $rs->initialize($result);
