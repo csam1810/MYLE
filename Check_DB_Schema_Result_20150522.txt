@@ -1,0 +1,70 @@
+Information about changes 21.05.15 
+
+- I had to delete the content in order to set the foreign constraints. They are used to make sure that only valid foreign keys can
+be used. E.g. in a recipe->weightUnitID can only one of the weightUnits of table WeightUnit be used. 
+Content of weightUnit and difficulties are untouched. 
+There should be the important constraints but it should not be too strict. 
+It is a lot easier to delete fields than to add them later because when there is a foreign key then data need to be deleted beforehand. 
+
+
+- createDate and updateDate added to Recipe, IngredientOfRecipe, User, Ingredient, List, ListDetail 
+(not in Difficulties, WeightUnit because they don't change)
+they are automatically filled by database with the current timestamp when entity is created or updated
+
+- createUserID added to Recipe, Ingredient, List
+NOT in IngredientOfRecipe and ListDetail because only the owner of the recipe or list is allowed to change it 
+(would be different if we would have an admin, should we add that now and delete it when we don't need it?
+not in Difficulties, WeightUnit because they don't change)
+createUser has always the property NULL yes in order to create 
+
+there were no foreign keys - you can see them in structure -> relation view
+(for each field which should be used for foreign key there has to be an index)
+
+ids of recipe, ingredient, list are filled by database (auto increment)
+IngredientOfRecipe
+- ingredientOfRecipeID dropped, new key  (!!!!!)
+- new primary key is combination of recipeID and ingredientID
+ListDetail
+- primary key is combination of listID and recipeID
+!!! When a recipe or the list is deleted then the entry in listDetail is deleted as well 
+(relation view -> foreign constraint: option)
+-> there could be lists without listdetails but we have that anyway with default list which is at the beginning empty
+
+I haven't defined that for other constraints because I think that it should be handled in the model and
+not in database
+
+User: changed all text types to varchar like all other text fields
+userid has now length 50, a length is necessary to define it as primary key
+now it is not possible that the userid is not unique like the data that had been in the table
+userId: length 50
+displayName: length 25
+phoneNo: length 25
+password length 15
+
+
+
+WeightUnits - name changed, unitID is unchanged
+- gramm -> gram
+- kilogramm -> kilogram
+
+
+Recipe
+- picture with mediumblob type for pictures ~16MB
+- description added with length 500
+
+
+differences to model - we will use it that way
+- user field password instead of pw
+- user field phoneNo instead of telnr
+- difficulties: medium instead of middle
+
+
+I haven't change the latin1-swedish_ci, not sure what we should use
+If we have problem with comparing strings then it could be an issue
+
+
+!!! I defined all fields which are not essential with null = yes, in my opinion this is necessary to prevent that
+all fields are must fields - the wierd thing is that the defaultvalue is null which is ok for foreign keys but
+wierd for text fields - if there is a problem that could be the reason
+
+(new tables: all of the tables use InnoDB (Table -> Operations, table options / storage engine = InnoDB, necessary for foreign keys))
