@@ -51,7 +51,7 @@ class LoginController extends AbstractActionController
                  $uid = (string)$form->get('loginid')->getValue();
                  $p = (string)$form->get('loginpassword')->getValue();
                
-                 $rs = getResultSet("user");
+                 $rs = getResultSet("User");
                  foreach ($rs as $row) {
                       if(strcmp($uid,(string)$row['userID'])==0 && strcmp($p,(string)$row['password'])==0){
                           login($uid);

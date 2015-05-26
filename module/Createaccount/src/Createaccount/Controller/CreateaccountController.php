@@ -54,7 +54,7 @@
                  $pn = (string)$form->get('phoneNo')->getValue();
                  $p = (string)$form->get('createAccountpassword')->getValue();
                  $rp = (string)$form->get('repassword')->getValue();
-                 $rs = getResultSet("user");
+                 $rs = getResultSet("User");
                  foreach ($rs as $row) {
                       if(strcmp($uid,(string)$row['userID'])==0){
                             echo "<script>alert('Error: User id dose exist!');</script>";
@@ -62,7 +62,7 @@
                       }
                  }
                  if(strcmp($p,$rp)==0){
-                    executeQuery("INSERT INTO user(userID, displayName, phoneNo, password) VALUES ('" . $uid . "','" . $dn . "','" . $pn . "','" . $p . "')");
+                    executeQuery("INSERT INTO User(userID, displayName, phoneNo, password) VALUES ('" . $uid . "','" . $dn . "','" . $pn . "','" . $p . "')");
                     echo "<script>alert('User successfully created!');</script>";
                     login($uid);
                     return $this->redirect()->toRoute('recipe', array('action' => 'index'));

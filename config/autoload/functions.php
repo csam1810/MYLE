@@ -21,7 +21,7 @@ function getLoginDisplayName(){
     }
     else{
          $db = getAdapter();
-         $statement = $db->createStatement("SELECT displayName FROM user WHERE userID='" . $_SESSION['user'] . "'");
+         $statement = $db->createStatement("SELECT displayName FROM User WHERE userID='" . $_SESSION['user'] . "'");
          $result = $statement->execute();
          $rs = new ResultSet;
          $rs->initialize($result);
