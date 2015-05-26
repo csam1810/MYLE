@@ -123,6 +123,26 @@ namespace Recipe\Controller;
          }
          return array('form' => $form);
      }
+     
+     
+     /* CV: getRecipesByName
+      */
+       public function getSearchResultAction()
+     {
+           /*
+         $recipeEntities = $this->getRecipeTable()->getRecipeByName();
+         //containers
+         $recipes = array();
+         $difficulties = array();
+         foreach($recipeEntities as $recipe) {
+             $recipes[$recipe->recipeID] = $recipe;
+             $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
+         }
+         return new ViewModel(array(
+             'recipes' => $recipes, 'difficulties' => $difficulties,
+         ));*/
+     }
+     
 
      public function editAction()
      {
