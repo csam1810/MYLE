@@ -7,7 +7,11 @@
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
  <p>
-     <a href="<?php echo $this->url('recipe', array('action'=>'createRecipe'));?>">Add new recipe</a>
+     <?php
+     if($_SESSION['user'] != "") {
+         echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>";
+     }
+     ?>
      <!--CV change! here is not the action <a href="<--?php echo $this->url('recipe', array('action'=>'createRecipe'));?>">Search recipe</a>-->
  </p>
 

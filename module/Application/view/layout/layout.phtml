@@ -2,6 +2,8 @@
 
 if(@$_POST['logout']){ 
     logout();
+    //AJ: this forces the page to refresh instantly, is probably not a very good solution
+    header( "refresh:0;" );
 }
 ?>
 
