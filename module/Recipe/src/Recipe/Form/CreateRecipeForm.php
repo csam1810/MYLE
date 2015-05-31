@@ -43,6 +43,18 @@ class CreateRecipeForm extends Form {
              )
          ));
          $this->add(array(
+             'name' => 'description',
+             'type' => 'Textarea',
+             'options' => array(
+                 'label' => 'Short description',
+             ),
+             'attributes' => array(
+                 'class' => 'form-control',
+                 'rows' => '2',
+                 'cols' => '100',
+             ),
+         ));
+         $this->add(array(
              'name' => 'instructions',
              'type' => 'Textarea',
              'options' => array(
@@ -60,7 +72,7 @@ class CreateRecipeForm extends Form {
              'name' => 'ingredients',
              'options' => array(
                  'label' => 'Please choose ingredients for this recipe',
-                 'count' => 3,
+                 'count' => 1,
                  'should_create_template' => true,
                  'template_placeholder' => '__ingredientGroup__',
                  'allow_add' => true,
@@ -100,5 +112,19 @@ class CreateRecipeForm extends Form {
                  
              ),
          ));
+         
+         /*$this->setValidationGroup(array(
+             'csrf',
+             'product' => array(
+                 'name',
+                 'price',
+                 'brand' => array(
+                     'name',
+                 ),
+                 'categories' => array(
+                     'name',
+                 ),
+             ),
+         ));*/
     }
 }

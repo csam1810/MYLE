@@ -12,6 +12,7 @@ namespace Recipe\Controller;
  use Zend\View\Model\ViewModel;
  use Recipe\Model\Recipe;
  use Recipe\Model\IngredientsOfRecipe;
+ use Zend\InputFilter\InputFilter;
 
  class RecipeController extends AbstractActionController
  {
@@ -81,51 +82,48 @@ namespace Recipe\Controller;
          ));
      }
 
-     public function createRecipeAction()
-     {
-         $formManager = $this->getServiceLocator()->get('FormElementManager');
-         $form = $formManager->get('Recipe\Form\CreateRecipeForm');
-         
-         //$form->get('submit')->setValue('Add');
+     public function createRecipeAction() {
+        $formManager = $this->getServiceLocator()->get('FormElementManager');
+        $form = $formManager->get('Recipe\Form\CreateRecipeForm');
 
-         $request = $this->getRequest();
-         if ($request->isPost()) {
-             $recipe = new Recipe();
-             $form->setInputFilter($recipe->getInputFilter());
-             $form->setData($request->getPost());
+        //$form->get('submit')->setValue('Add');
 
-             if ($form->isValid()) {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $recipe = new Recipe();
+            $form->setInputFilter($recipe->getInputFilter());
+            $form->setData($request->getPost());
+
+            //check if data needed for recipe creation is valid
+            if ($form->isValid()) {
                 $recipe->exchangeArray($form->getData());
                 //TODO: move following line (maybe to the validator in recipe.php?)
                 $recipe->difficultyID = $recipe->difficultyID['difficultyID'];
                 $id = $this->getRecipeTable()->saveRecipe($recipe);
-                
-                foreach($form->get('ingredients') as $ingredientFieldset) {
-                    //TODO: name and id synonomously! CHANGE!
+
+                foreach ($form->get('ingredients') as $ingredientFieldset) {
+                    $ingredientID = $ingredientFieldset->get('ingredientID')->get('ingredientID')->getValue();
+                    $amount = $ingredientFieldset->get('ingredientAmount')->getValue();
                     $ingredient = new IngredientsOfRecipe();
-                    $ingredient->exchangeArray(array('amount' => $ingredientFieldset->get('ingredientAmount')->getValue(),
+
+                    $ingredient->exchangeArray(array('amount' => $amount,
                         'weightUnitID' => $ingredientFieldset->get('weightUnit')->get('unitName')->getValue(),
-                        'ingredientID' => $ingredientFieldset->get('ingredientName')->get('ingredientName')->getValue(),
+                        'ingredientID' => $ingredientID,
                         'recipeID' => $id));
-                    
-                    /*
-                    echo 'amount: '.$ingredient->amount.'\n';
-                    echo 'weight unit id: '.$ingredient->weightUnitID.'\n';
-                    echo 'recipe id: '.$ingredient->recipeID.'\n';
-                    echo 'ingredientID : '.$ingredient->ingredientID.'\n';
-                     * 
-                     */
+
                     $this->getIngredientsOfRecipeTable()->saveIngredientsOfRecipe($ingredient);
                 }
-               
+
                 return $this->redirect()->toRoute('recipe', array('action' => 'detailedView', 'recipeID' => $id));
-             }
-         }
-         return array('form' => $form);
-     }
-     
-     
-     /* CV: getRecipesByName
+            }
+        } else {
+            //echo "recipe is not valid!";
+        }
+        
+        return array('form' => $form);
+    }
+
+    /* CV: getRecipesByName
       */
        public function getSearchResultAction()
      {

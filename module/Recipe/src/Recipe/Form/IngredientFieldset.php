@@ -16,8 +16,9 @@ namespace Recipe\Form;
 use Zend\Form\Fieldset;
 use \Recipe\Model\IngredientsOfRecipe;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class IngredientFieldset extends Fieldset{
+class IngredientFieldset extends Fieldset implements InputFilterProviderInterface {
     
     public function __construct()
     {
@@ -26,11 +27,12 @@ class IngredientFieldset extends Fieldset{
          $this->setHydrator(new ClassMethodsHydrator(false));
          $this->setObject(new IngredientsOfRecipe());
 
+         $this->setAttribute('class','form-horizontal');
     }
     
     public function init() {
         $this->add(array(
-             'name' => 'ingredientName',
+             'name' => 'ingredientID',
              'type' => 'IngredientNameFieldset',
          ));
          
@@ -50,4 +52,26 @@ class IngredientFieldset extends Fieldset{
              'type' => 'WeightUnitFieldset',
          ));
     }
+    
+    public function getInputFilterSpecification()
+     {
+        return array(
+             'ingredientAmount' => array(
+                 'required' => true,
+                 'filters' => array(
+                    array('name' => 'Int'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'GreaterThan',
+                        'options' => array(
+                            'min' => 0,
+                            'inclusive' => false,
+                            'message' => 'Please choose an amount > 0!',
+                        )
+                    ),
+                ),
+            ),
+         );
+     }
 }

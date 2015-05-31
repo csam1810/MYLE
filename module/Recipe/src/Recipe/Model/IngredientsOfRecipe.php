@@ -20,6 +20,8 @@ class IngredientsOfRecipe {
     public $ingredientID;
     public $recipeID;
     
+    protected $inputFilter;
+    
     //AJ: this method is needed to work with Zend's TableGateway class
      public function exchangeArray($data)
      {

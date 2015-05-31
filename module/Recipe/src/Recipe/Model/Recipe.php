@@ -17,6 +17,7 @@ namespace Recipe\Model;
  {
      public $recipeID;
      public $recipeName;
+     public $description;
      public $instructions;
      public $duration;
      public $difficultyID;
@@ -28,6 +29,7 @@ namespace Recipe\Model;
      {
          $this->recipeID  = (!empty($data['recipeID'])) ? $data['recipeID'] : null;
          $this->recipeName    = (!empty($data['recipeName'])) ? $data['recipeName'] : null;
+         $this->description    = (!empty($data['description'])) ? $data['description'] : null;
          $this->instructions = (!empty($data['instructions'])) ? $data['instructions'] : null;
          $this->duration = (!empty($data['duration'])) ? $data['duration'] : null;
          $this->difficultyID = (!empty($data['difficultyID'])) ? $data['difficultyID'] : null;
