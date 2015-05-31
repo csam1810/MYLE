@@ -21,6 +21,7 @@ namespace Recipe\Model;
      public $instructions;
      public $duration;
      public $difficultyID;
+     public $owner;
      
      protected $inputFilter;
 
@@ -33,6 +34,7 @@ namespace Recipe\Model;
          $this->instructions = (!empty($data['instructions'])) ? $data['instructions'] : null;
          $this->duration = (!empty($data['duration'])) ? $data['duration'] : null;
          $this->difficultyID = (!empty($data['difficultyID'])) ? $data['difficultyID'] : null;
+         $this->createUserID  = (!empty($data['createUserID'])) ? $data['createUserID'] : null;
      }
 
     public function getInputFilter() {
@@ -45,6 +47,11 @@ namespace Recipe\Model;
                  'filters'  => array(
                      array('name' => 'Int'),
                  ),
+             ));
+             
+             $inputFilter->add(array(
+                 'name'     => 'createUserID',
+                 'required' => true,
              ));
 
              $inputFilter->add(array(
@@ -61,6 +68,25 @@ namespace Recipe\Model;
                              'encoding' => 'UTF-8',
                              'min'      => 3,
                              'max'      => 255,
+                         ),
+                     ),
+                 ),
+             ));
+             
+             $inputFilter->add(array(
+                 'name'     => 'description',
+                 'required' => false,
+                 'filters'  => array(
+                     array('name' => 'StripTags'),
+                     array('name' => 'StringTrim'),
+                 ),
+                 'validators' => array(
+                     array(
+                         'name'    => 'StringLength',
+                         'options' => array(
+                             'encoding' => 'UTF-8',
+                             'min'      => 0,
+                             'max'      => 500,
                          ),
                      ),
                  ),
@@ -91,6 +117,16 @@ namespace Recipe\Model;
                  'filters'  => array(
                      array('name' => 'Int'),
                  ),
+                 'validators' => array(
+                    array(
+                        'name' => 'GreaterThan',
+                        'options' => array(
+                            'min' => 0,
+                            'inclusive' => false,
+                            'message' => 'Please choose a duration greater than 0!',
+                        )
+                    ),
+                ),
              ));
              
              $inputFilter->add(array(

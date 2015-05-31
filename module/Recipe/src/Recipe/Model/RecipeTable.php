@@ -60,6 +60,7 @@ namespace Recipe\Model;
              'recipeName'  => $recipe->recipeName,
              'duration' => $recipe->duration,
              'difficultyID' => $recipe->difficultyID,
+             'createUserID' => $recipe->createUserID,
          );
 
          $id = (int) $recipe->recipeID;

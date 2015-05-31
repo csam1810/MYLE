@@ -32,6 +32,15 @@ class CreateRecipeForm extends Form {
              'name' => 'id',
              'type' => 'Hidden',
          ));
+         
+         $this->add(array(
+             'name' => 'createUserID',
+             'type' => 'Hidden',
+             'attributes' => array(
+                 'value' => $_SESSION['user']
+              ),
+         ));
+         
          $this->add(array(
              'name' => 'recipeName',
              'type' => 'Text',

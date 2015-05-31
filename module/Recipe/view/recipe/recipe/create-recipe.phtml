@@ -12,7 +12,7 @@
  *
  * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
  */
-
+if(strcmp($_SESSION['user'], "") != 0) {
  $title = 'Create new recipe';
  $this->headTitle($title);
 
@@ -25,6 +25,7 @@
  echo "<br>";
  echo $this->form()->openTag($form);
  echo $this->formHidden($form->get('id'));
+ echo $this->formHidden($form->get('createUserID'));
  echo $this->formRow($form->get('recipeName'));
  echo "<br>";
  echo $this->formRow($form->get('description'));
@@ -56,3 +57,7 @@
  echo "<br>";
  echo $this->formSubmit($form->get('submit'));
  echo $this->form()->closeTag();
+
+} else {
+    echo "Access forbidden! To be able to create recipes you must be logged in!";
+}
