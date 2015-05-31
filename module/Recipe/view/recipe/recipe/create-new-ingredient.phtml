@@ -1,0 +1,37 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+/**
+ * Description of create-new-ingredient
+ *
+ * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
+ */
+if(strcmp($_SESSION['user'], "") != 0) {
+ $title = 'Create new ingredient';
+ $this->headTitle($title);
+
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <br>
+ <?php
+ $form->setAttribute('action', $this->url('recipe', array('action' => 'createNewIngredient')));
+ $form->prepare();
+
+ echo "<br>";
+ echo $this->form()->openTag($form);
+ echo $this->formHidden($form->get('id'));
+ echo $this->formHidden($form->get('createUserID'));
+ echo $this->formRow($form->get('ingredientName'));
+ echo "<br>";
+ echo $this->formSubmit($form->get('submit'));
+ echo $this->form()->closeTag();
+
+} else {
+    echo "Access forbidden! To be able to create recipes you must be logged in!";
+}

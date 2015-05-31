@@ -121,19 +121,5 @@ class CreateRecipeForm extends Form {
                  
              ),
          ));
-         
-         /*$this->setValidationGroup(array(
-             'csrf',
-             'product' => array(
-                 'name',
-                 'price',
-                 'brand' => array(
-                     'name',
-                 ),
-                 'categories' => array(
-                     'name',
-                 ),
-             ),
-         ));*/
     }
 }

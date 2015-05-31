@@ -39,6 +39,7 @@ namespace Recipe\Model;
      {
          $data = array(
              'ingredientName' => $ingredient->ingredientName,
+             'createUserID' => $ingredient->createUserID,
          );
 
          $id = (int) $ingredient->ingredientID;

@@ -12,6 +12,7 @@ namespace Recipe\Controller;
  use Zend\View\Model\ViewModel;
  use Recipe\Model\Recipe;
  use Recipe\Model\IngredientsOfRecipe;
+ use Recipe\Model\Ingredient;
  use Zend\InputFilter\InputFilter;
 
  class RecipeController extends AbstractActionController
@@ -115,6 +116,30 @@ namespace Recipe\Controller;
                 }
 
                 return $this->redirect()->toRoute('recipe', array('action' => 'detailedView', 'recipeID' => $id));
+            }
+        } else {
+            //echo "recipe is not valid!";
+        }
+        
+        return array('form' => $form);
+    }
+    
+    public function createNewIngredientAction() {
+        $formManager = $this->getServiceLocator()->get('FormElementManager');
+        $form = $formManager->get('Recipe\Form\CreateIngredientForm');
+
+        //$form->get('submit')->setValue('Add');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $ingredient = new Ingredient();
+            $form->setInputFilter($ingredient->getInputFilter());
+            $form->setData($request->getPost());
+            
+            if($form->isValid()) {
+                $ingredient->exchangeArray($form->getData());
+                $this->getIngredientTable()->saveIngredient($ingredient);
+                return $this->redirect()->toRoute('recipe', array('action' => 'createRecipe'));
             }
         } else {
             //echo "recipe is not valid!";
