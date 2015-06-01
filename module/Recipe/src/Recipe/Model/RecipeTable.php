@@ -37,7 +37,7 @@ namespace Recipe\Model;
          return $row;
      }
      
-     /*CV: get recipes by name for searching
+     /*CV: ins get recipes by name for searching
       * result can be >=0
         extend ability to search 
         "SELECT * FROM student WHERE name LIKE '%John%'";    
@@ -45,13 +45,13 @@ namespace Recipe\Model;
       * is cast necessary for string?
       *       */
      
-     
+     /*
       public function getRecipeByName($searchTerm)
      {
          $recipeName  = (string) $searchTerm;
          $rowset = $this->tableGateway->select(array('recipeName' => $recipeName));                  
          return $resultSet;         
-     }
+     }*/
 
      public function saveRecipe(Recipe $recipe)
      {

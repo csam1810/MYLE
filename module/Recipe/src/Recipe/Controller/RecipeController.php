@@ -149,10 +149,10 @@ namespace Recipe\Controller;
     }
 
     /* CV: getRecipesByName
-      */
+      
        public function getSearchResultAction()
      {
-           /*
+           
          $recipeEntities = $this->getRecipeTable()->getRecipeByName();
          //containers
          $recipes = array();
@@ -163,8 +163,8 @@ namespace Recipe\Controller;
          }
          return new ViewModel(array(
              'recipes' => $recipes, 'difficulties' => $difficulties,
-         ));*/
-     }
+         ));
+     }*/
      
 
      public function editAction()
