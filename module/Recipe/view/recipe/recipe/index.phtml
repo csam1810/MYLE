@@ -8,11 +8,10 @@
  <h1><?php echo $this->escapeHtml($title); ?></h1>
  <p>
      <?php
-     if($_SESSION['user'] != "") {
+     if(strcmp($_SESSION['user'],"") != 0) {
          echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>";
      }
-     ?>
-     <!--CV change! here is not the action <a href="<--?php echo $this->url('recipe', array('action'=>'createRecipe'));?>">Search recipe</a>-->
+     ?>     
  </p>
 
  <table class="table">
@@ -30,10 +29,17 @@
      <td>
          <a href="<?php echo $this->url('recipe',
              array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
-         <!--<a href="<?php echo $this->url('recipe',
+         <a href="<?php echo $this->url('recipe',
              array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
          <a href="<?php echo $this->url('recipe',
-             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>-->
+             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+
+         <!--CVL there should be some space -->
+         <?php
+            if($_SESSION['user'] != "") {                 
+            echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
+            }
+         ?>
      </td>
  </tr>
  <?php endforeach; ?>
