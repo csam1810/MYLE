@@ -230,36 +230,60 @@ namespace Recipe\Controller;
              'weightUnits' => $ingredientWeightUnits));
      }
      
-     //ins CVL
+    //ins CVL 
+    /** 
+    * A list is added to default list of user
+    * If a user does not yet have a list, one will be created
+    * Assumption: only 1 list for each user
+    */
+     
      //asumption that user is logged in, ok because feature only available when logged-in
-     //assumption each user has exactly 1 list
+
      public function addToListAction() {
          //get id of recipe which should be added to list
          $recipeID = (int) $this->params()->fromRoute('recipeID');
          
          //get default list of user
             if($_SESSION['user'] != "") {                                       
-                $user = $_SESSION['user'];
-                $list = $this->getListsTable()->getListsByUser($user);    //1 list!            
-
-                if ( $list != null ){
-                    $listID = (int) [$list->listID];
-                    //CVL TODO check if recipe is not yet added!! either fetch all or check for recipeID                
-                    //$listDetails = $this->getListDetailTable()->getListDetailForList([$list->listID]);                
+                $userID = $_SESSION['user']; //assumption user is the userid  
+                $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
+                    
+                //CVL2  
+                if ( $list == null ){ //create default list
+                    $listNew = new Lists();
+                    //use default text for name and description of list
+                    $listName = "favoriteList";
+                    $listDescription = "Default list for user";
+                    $listNew->exchangeArray(array('createUserID' => $userID, 
+                        'listName' => $listName,                                                
+                        'listDescription' => $listDescription));
+                    
+                    //returns id of new list
+                    $listID = $this->getListsTable()->saveList($listNew);                     
+                }
+                
+                if ($list != null){
+                    //the user has now a list                    
+                    
+                    //CVL TODO check if recipe is not yet added!! 
+                    //either fetch all or check for recipeID                
+                    //$listDetails = $this->getListDetailTable()->getListDetailForList([$list->listID]);
                 
                     $listDetailNew = new ListDetail();
-                    $listDetailNew->exchangeArray(array('listID' => $listID,                                                
+                    $listDetailNew->exchangeArray(array('listID' => $list->listID,                                                
                    'recipeID' => $recipeID));
 
                     $this->getListDetailTable()->saveListDetail($listDetailNew);
-               
-                    //CVL TODOthere should be a success message, validation?
+                                   
+                    //CVL TODO there should be a success message, validation?
                     //echo "<script>alert('Recipe added to favorite list!');</script>";
+                   
+                }else{
+                //should not happen
+                 throw new \Exception("Favorite Recipe - no list found for $userID");
+                }          
                     
-
-                    return $this->redirect()->toRoute('recipe', array('action' => 'index'));
-                }//if listid
-            }
-        }      
-}
-     
+                return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+        }//check if user is logged-in
+    } //method end
+}   

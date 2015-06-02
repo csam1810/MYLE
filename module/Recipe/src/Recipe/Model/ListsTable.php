@@ -30,41 +30,62 @@ class ListsTable extends AbstractTableGateway{
          return $resultSet;
      }
 
-     //CVL assumption there is exactly 1 list (already created, not more)
-     //only listid back not list
+     /**
+      * Returns either the list of the user or null
+      */
+     //CVL assumption there is exactly 1 list (already created, not more)  
      public function getListsByUser($userID)
-     {
+     {   
+         
          $rowset = $this->tableGateway->select(array('createUserID' => $userID));
+         //CVL 2 if ($rowset->count() > 0){
+         
+         $row = null;
          $row = $rowset->current();
+         
          if (!$row) {
-             throw new \Exception("Could not find list for $userID");
+             //CVL TODO create List!
+             //throw new \Exception("ListsTable: Could not find list for $userID");
+             
+         }else {            
          }
-         return $row->listID;
+         
+         return $row;
+         //CVL 2 }
      }
      
+     /*getList returns either list with requested ID or null*/
      public function getList($listID)
      {
          $listID  = (int) $listID;
          $rowset = $this->tableGateway->select(array('listID' => $listID));
+         $row = null;
          $row = $rowset->current();
-         if (!$row) {
-             throw new \Exception("Could not find list (row) with id $listID");
+         if (!$row) {         
+         //    throw new \Exception("Could not find list (row) with id $listID");
          }
          return $row;
      }
      
+     //CVL2 ins
+     /**
+      * List will be created in DB
+      * ListID is automatically set by DB
+      * @return listID of newly created list
+      */
+   
      public function saveList(Lists $list)
      {
          $data = array(
-             'createUserID' => $list->createUserID,
-             'listName'  => $list->listName,
-             'listDescription' => $list->listDescription,             
+             'createUserID'     => $list->createUserID,
+             'listName'         => $list->listName,
+             'listDescription'  => $list->listDescription,             
          );
 
          //autoincrement, same as recipeid
          $id = (int) $list->listID;
          
-         if ($id == 0) {
+         if ($id <= 0) {
              $this->tableGateway->insert($data);
              //set ID of newly inserted entity
              $id = $this->tableGateway->lastInsertValue;
@@ -78,9 +99,9 @@ class ListsTable extends AbstractTableGateway{
          return $id;
      }
      
-     //CVL db should delete listdetails automatically
+     //CVL db should delete listdetails automatically, CV2 changed deleteID, not tested
       public function deleteList($listID)
      {
-         $this->tableGateway->delete(array('$deleteID' => (int) $deleteID));
+         $this->tableGateway->delete(array('$deleteID' => (int) $listID));
      }
 }
