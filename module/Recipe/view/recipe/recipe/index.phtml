@@ -11,8 +11,7 @@
      if($_SESSION['user'] != "") {
          echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>";
      }
-     ?>
-     <!--CV change! here is not the action <a href="<--?php echo $this->url('recipe', array('action'=>'createRecipe'));?>">Search recipe</a>-->
+     ?>     
  </p>
 
  <table class="table">
@@ -34,6 +33,12 @@
              array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
          <a href="<?php echo $this->url('recipe',
              array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+         <!--CVL there should be some space -->
+         <?php
+            if($_SESSION['user'] != "") {                 
+            echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
+            }
+         ?>
      </td>
  </tr>
  <?php endforeach; ?>

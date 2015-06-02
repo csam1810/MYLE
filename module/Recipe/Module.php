@@ -14,11 +14,16 @@ namespace Recipe;
  use Recipe\Model\WeightUnits;
  use Recipe\Model\WeightUnitsTable;
  use Recipe\Model\Difficulties;
- use Recipe\Model\DifficultiesTable;
+ use Recipe\Model\DifficultiesTable; 
+ use Recipe\Model\Lists;                    //ins CVL
+ use Recipe\Model\ListsTable;               //ins CVL
+ use Recipe\Model\ListDetail;               //ins CVL
+ use Recipe\Model\ListDetailTable;          //ins CVL
  use Recipe\Form\DifficultyFieldset;
  use Recipe\Form\IngredientNameFieldset;
  use Recipe\Form\WeightUnitFieldset;
  use Recipe\Form\IngredientFieldset;
+
  
  use Zend\Db\ResultSet\ResultSet;
  use Zend\Db\TableGateway\TableGateway;
@@ -104,6 +109,32 @@ namespace Recipe;
                      $resultSetPrototype = new ResultSet();
                      $resultSetPrototype->setArrayObjectPrototype(new Difficulties());
                      return new TableGateway('Difficulties', $dbAdapter, null, $resultSetPrototype);
+                 },
+                 //ins CVL
+                 'Recipe\Model\ListsTable' =>  function($sm) {
+                     $tableGateway = $sm->get('ListsTableGateway');
+                     $table = new ListsTable($tableGateway);
+                     return $table;
+                 },
+                 //ins CVL
+                 'ListsTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new Lists());
+                     return new TableGateway('Lists', $dbAdapter, null, $resultSetPrototype);
+                 },
+                 //ins CVL
+                  'Recipe\Model\ListDetailTable' =>  function($sm) {
+                     $tableGateway = $sm->get('ListDetailTableGateway');
+                     $table = new ListDetailTable($tableGateway);
+                     return $table;
+                 },
+                 //ins CVL
+                 'ListDetailTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new ListDetail());
+                     return new TableGateway('ListDetail', $dbAdapter, null, $resultSetPrototype);
                  },
              ),
          );

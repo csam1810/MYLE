@@ -13,6 +13,8 @@ namespace Recipe\Controller;
  use Recipe\Model\Recipe;
  use Recipe\Model\IngredientsOfRecipe;
  use Recipe\Model\Ingredient;
+ use Recipe\Model\Lists;                //ins CVL
+ use Recipe\Model\ListDetail;           //ins CVL
  use Zend\InputFilter\InputFilter;
 
  class RecipeController extends AbstractActionController
@@ -22,6 +24,8 @@ namespace Recipe\Controller;
      protected $ingredientsOfRecipeTable;
      protected $weightUnitsTable;
      protected $difficultiesTable;
+     protected $listsTable;                     //ins CVL
+     protected $listDetailTable;                //ins CVL
      
      public function getDifficultiesTable()
      {
@@ -67,6 +71,29 @@ namespace Recipe\Controller;
          }
          return $this->recipeTable;
      }
+     
+     //CVL ins
+      public function getListsTable()
+     {
+         if (!$this->listsTable) {
+             $sm = $this->getServiceLocator();
+             $this->listsTable = $sm->get('Recipe\Model\ListsTable');
+         }
+         return $this->listsTable;
+     }
+     
+     
+     //CVL ins
+     public function getListDetailTable()
+     {
+         if (!$this->listDetailTable) {
+             $sm = $this->getServiceLocator();
+             $this->listDetailTable = $sm->get('Recipe\Model\ListDetailTable');
+         }
+         return $this->listDetailTable;
+     }
+     
+     
      
      public function indexAction()
      {
@@ -202,4 +229,37 @@ namespace Recipe\Controller;
              'ingredientsOfRecipe' => $ingredients, 'ingredientNames' => $ingredientNames,
              'weightUnits' => $ingredientWeightUnits));
      }
- }
+     
+     //ins CVL
+     //asumption that user is logged in, ok because feature only available when logged-in
+     //assumption each user has exactly 1 list
+     public function addToListAction() {
+         //get id of recipe which should be added to list
+         $recipeID = (int) $this->params()->fromRoute('recipeID');
+         
+         //get default list of user
+            if($_SESSION['user'] != "") {                                       
+                $user = $_SESSION['user'];
+                $list = $this->getListsTable()->getListsByUser($user);    //1 list!            
+
+                if ( $list != null ){
+                    $listID = (int) [$list->listID];
+                    //CVL TODO check if recipe is not yet added!! either fetch all or check for recipeID                
+                    //$listDetails = $this->getListDetailTable()->getListDetailForList([$list->listID]);                
+                
+                    $listDetailNew = new ListDetail();
+                    $listDetailNew->exchangeArray(array('listID' => $listID,                                                
+                   'recipeID' => $recipeID));
+
+                    $this->getListDetailTable()->saveListDetail($listDetailNew);
+               
+                    //CVL TODOthere should be a success message, validation?
+                    //echo "<script>alert('Recipe added to favorite list!');</script>";
+                    
+
+                    return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+                }//if listid
+            }
+        }      
+}
+     
