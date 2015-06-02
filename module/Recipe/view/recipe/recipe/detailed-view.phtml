@@ -54,39 +54,42 @@
 
  <span style="position: absolute;right: 110px;">
     <form action="" method="POST">
-        <input type="submit" name="download" Value="Download">
+        <input type="submit" name="downloadSh" Value="Download Shopping list">&nbsp;&nbsp;<input type="submit" name="downloadRe" Value="Download Recipe">
     </form>
  </span>
  
  <?php
- 
-if(@$_POST['download']){ 
-    $file ="recipe.txt";
+if(@$_POST['downloadRe']||@$_POST['downloadSh']){  
+    if(@$_POST['downloadRe']){ 
+        $contents=$recipe->recipeName . "\r\n".
+                  "\r\nShort Description:" . 
+                  "\r\n".$recipe->description . "\r\n".
+                  "\r\nInstructions:" . 
+                  "\r\n".$recipe->instructions . "\r\n".
+                  "\r\nDifficulty: " .$difficulty . "\r\n".
+                  "\r\nDuration: " .$recipe->duration . " minutes";
+        $file ="recipe.txt";
+    }elseif(@$_POST['downloadSh']){
+        $contents=$recipe->recipeName . "\r\n".
+                  "\r\nIngredient:" . 
+                  $myIngredient . "\r\n";
+        $file ="shoping_list.txt";
+    }
     $handle = fopen($file, "w");
-    $contents=$recipe->recipeName . "\r\n".
-              "\r\nShort Description:" . 
-              "\r\n".$recipe->description . "\r\n".
-              "\r\nIngredient:" . 
-              $myIngredient . "\r\n".
-              "\r\nInstructions:" . 
-              "\r\n".$recipe->instructions . "\r\n".
-              "\r\nDifficulty: " .$difficulty . "\r\n".
-              "\r\nDuration: " .$recipe->duration . " minutes";
-    
     fwrite($handle, $contents);
     fclose($handle);
     if(file_exists($file)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename='.basename($file));
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
-            ob_clean();
-            flush();
-            readfile($file);
-            exit;
-     }
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename='.basename($file));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        ob_clean();
+        flush();
+        readfile($file);
+        exit;
+    }
 }
