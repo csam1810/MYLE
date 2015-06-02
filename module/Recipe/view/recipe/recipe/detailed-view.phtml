@@ -25,13 +25,18 @@
      <th>Weight Unit</th>
      <th>&nbsp;</th>
  </tr>
- <?php foreach ($ingredientsOfRecipe as $ingredient) : ?>
+ <?php 
+ $myIngredient="";
+ foreach ($ingredientsOfRecipe as $ingredient) : ?>
     <tr>
          <td><?php echo $this->escapeHtml($ingredientNames[$ingredient->ingredientID]);?></td>
          <td><?php echo $this->escapeHtml($ingredient->amount);?></td>
          <td><?php echo $this->escapeHtml($weightUnits[$ingredient->weightUnitID]);?></td>
+        
      </tr>
- <?php endforeach; ?>
+ <?php 
+         $myIngredient .= "\r\n".$ingredientNames[$ingredient->ingredientID] . "\t" . $ingredient->amount ."". $ingredient->weightUnitID;
+      endforeach; ?>
  </table>
  
       
@@ -46,3 +51,43 @@
  
  <h4>Duration:</h4>
  <?php echo $recipe->duration . " minutes"; ?>
+
+ <span style="position: absolute;right: 110px;">
+    <form action="" method="POST">
+        <input type="submit" name="download" Value="Download">
+    </form>
+ </span>
+ 
+ <?php
+ 
+if(@$_POST['download']){ 
+    $file ="recipe.txt";
+    $handle = fopen($file, "w");
+    $contents=$recipe->recipeName . "\r\n".
+              "\r\nShort Description:" . 
+              "\r\n".$recipe->description . "\r\n".
+              "\r\nIngredient:" . 
+              $myIngredient . "\r\n".
+              "\r\nInstructions:" . 
+              "\r\n".$recipe->instructions . "\r\n".
+              "\r\nDifficulty: " .$difficulty . "\r\n".
+              "\r\nDuration: " .$recipe->duration . " minutes";
+    
+    fwrite($handle, $contents);
+    fclose($handle);
+    if(file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename($file));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            ob_clean();
+            flush();
+            readfile($file);
+            exit;
+     }
+}
+
