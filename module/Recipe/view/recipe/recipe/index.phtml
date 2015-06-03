@@ -10,6 +10,9 @@
      <?php
      if(strcmp($_SESSION['user'],"") != 0) {
          echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>";
+         //CVL3 ins
+         //CVL3 TODO space between links
+         echo "<a href=".$this->url('list', array('action'=>'viewList')).">View favorite recipes</a>";
      }
      ?>     
  </p>

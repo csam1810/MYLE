@@ -50,21 +50,22 @@
  <?php echo $difficulty; ?>
  
  <h4>Duration:</h4>
- <?php echo $recipe->duration . " minutes"; ?>
-
- <span style="position: absolute;right: 110px;">
-    <form action="" method="POST">
-        <input type="submit" name="downloadSh" Value="Download Shopping list">&nbsp;&nbsp;<input type="submit" name="downloadRe" Value="Download Recipe">
-    </form>
- </span>
- 
+ <?php echo $recipe->duration . " minutes"; 
+ if($_SESSION['user'] != "") {  
+ ?>           
+    <span style="position: absolute;right: 110px;">
+       <form action="" method="POST">
+           <input type="submit" name="downloadSh" Value="Download Shopping list">&nbsp;&nbsp;<input type="submit" name="downloadRe" Value="Download Recipe">
+       </form>
+    </span>
  <?php
+ }
 if(@$_POST['downloadRe']||@$_POST['downloadSh']){  
     if(@$_POST['downloadRe']){ 
         $contents=$recipe->recipeName . "\r\n".
                   "\r\nShort Description:" . 
                   "\r\n".$recipe->description . "\r\n".
-                 "\r\nIngredient:" . 
+                  "\r\nIngredient:" . 
                   $myIngredient . "\r\n" .
                   "\r\nInstructions:" . 
                   "\r\n".$recipe->instructions . "\r\n".

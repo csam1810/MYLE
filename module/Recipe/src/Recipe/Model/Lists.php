@@ -24,9 +24,14 @@ class Lists{
     //class Lists implements InputFilterAwareInterface {    //CVL necessary
     public $listID;
     public $createUserID;
+    public $listName;       //ins CVL2
+    public $listDescription;//ins CVL2
+    
     
     public function exchangeArray($data) {
-        $this->listID  = (!empty($data['listID'])) ? $data['listID'] : null;
-        $this->createUserID    = (!empty($data['createUserID'])) ? $data['createUserID'] : null;
+        $this->listID           = (!empty($data['listID'])) ? $data['listID'] : null;
+        $this->createUserID     = (!empty($data['createUserID'])) ? $data['createUserID'] : null;
+        $this->listName         = (!empty($data['listName'])) ? $data['listName'] : null;               //ins CVL2
+        $this->listDescription  = (!empty($data['listDescription'])) ? $data['listDescription'] : null; //ins CVL2
     }
 }
