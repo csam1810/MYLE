@@ -64,10 +64,13 @@ if(@$_POST['downloadRe']||@$_POST['downloadSh']){
         $contents=$recipe->recipeName . "\r\n".
                   "\r\nShort Description:" . 
                   "\r\n".$recipe->description . "\r\n".
+                 "\r\nIngredient:" . 
+                  $myIngredient . "\r\n" .
                   "\r\nInstructions:" . 
                   "\r\n".$recipe->instructions . "\r\n".
                   "\r\nDifficulty: " .$difficulty . "\r\n".
-                  "\r\nDuration: " .$recipe->duration . " minutes";
+                  "\r\nDuration: " .$recipe->duration . " minutes"
+                ;
         $file ="recipe.txt";
     }elseif(@$_POST['downloadSh']){
         $contents=$recipe->recipeName . "\r\n".
