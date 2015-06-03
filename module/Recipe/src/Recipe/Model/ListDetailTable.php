@@ -41,7 +41,17 @@ namespace Recipe\Model;
          return $rowset;         
      }
      
-     //CVL OR should it be addRecipeToList?
+     //ins CVL3
+      public function getListDetail($listID, $recipeID)
+     {
+         $listID  = (int) $listID;
+         $recipeID  = (int) $recipeID;
+         $row = null;
+         $rows = $this->tableGateway->select(array('listID' => $listID, 'recipeID' => $recipeID));
+         return $row;         
+     }
+     
+     //CVL
      public function saveListDetail(ListDetail $listDetail)
      {
          $data = array(
@@ -49,8 +59,13 @@ namespace Recipe\Model;
              'recipeID' => $listDetail->recipeID,
          );
 
-         //CVL TODO: for now just insert without checking of they exists, cause db error if not
+         //CVL3
+         //check if already in database, meaning recipe already added to list
+         $listDetailinDB = $this->getListDetail($listDetail->listID, $listDetail->recipeID);
+         if ($listDetailinDB == null){
          $this->tableGateway->insert($data);
-         //CVL TODO return data? no own id, combination of listid and recipeid         
+         }
+         //CVL TODO return data necessary? id would be the combination of listid and recipeid  
+         //no information for caller if data were inserted or already in DB 
      }
  }

@@ -11,6 +11,7 @@
          'invokables' => array(
              'Recipe\Controller\Recipe' => 'Recipe\Controller\RecipeController',
              'DifficultyFieldset' => 'Recipe\Form\DifficultyFieldset',
+             'Recipe\Controller\List' => 'Recipe\Controller\RecipeController', //ins CVL3 ???
          ),
      ),
      
@@ -31,8 +32,19 @@
                      ),
                  ),
              ),
+             
+              'list' => array(
+                 'type'    => 'literal',
+                 'options' => array(
+                     'route'    => '/list',                                        
+                     'defaults' => array(
+                         'controller' => 'Recipe\Controller\Recipe',
+                         'action'     => 'view-list',                     
+                 ),
+             ),
          ),
      ),
+),
 
      
      'view_manager' => array(

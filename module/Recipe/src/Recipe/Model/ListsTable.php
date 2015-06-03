@@ -44,10 +44,9 @@ class ListsTable extends AbstractTableGateway{
          $row = $rowset->current();
          
          if (!$row) {
-             //CVL TODO create List!
+             //CVL TODO create List - right now on 2 places in controller, list properties necessary
              //throw new \Exception("ListsTable: Could not find list for $userID");
              
-         }else {            
          }
          
          return $row;

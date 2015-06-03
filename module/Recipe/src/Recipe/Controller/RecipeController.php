@@ -238,7 +238,9 @@ namespace Recipe\Controller;
     */
      
      //asumption that user is logged in, ok because feature only available when logged-in
-
+     //TODO if recipe already in favorite list
+     //TODO view recipe
+     //TODO ! get back to ?? start page
      public function addToListAction() {
          //get id of recipe which should be added to list
          $recipeID = (int) $this->params()->fromRoute('recipeID');
@@ -246,10 +248,16 @@ namespace Recipe\Controller;
          //get default list of user
             if($_SESSION['user'] != "") {                                       
                 $userID = $_SESSION['user']; //assumption user is the userid  
+                
                 $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
-                    
+                
+                $listID = 0; //CVL3
+                
                 //CVL2  
-                if ( $list == null ){ //create default list
+                if ( $list != null ){ //create default list, ins CVL3
+                $listID = $list->listID;               
+                }else { //create default list
+                
                     $listNew = new Lists();
                     //use default text for name and description of list
                     $listName = "favoriteList";
@@ -262,20 +270,18 @@ namespace Recipe\Controller;
                     $listID = $this->getListsTable()->saveList($listNew);                     
                 }
                 
-                if ($list != null){
-                    //the user has now a list                    
-                    
-                    //CVL TODO check if recipe is not yet added!! 
-                    //either fetch all or check for recipeID                
-                    //$listDetails = $this->getListDetailTable()->getListDetailForList([$list->listID]);
+                if ($listID  > 0){ //CVL3                    
+                
+                    //the user has now a list                                        
                 
                     $listDetailNew = new ListDetail();
-                    $listDetailNew->exchangeArray(array('listID' => $list->listID,                                                
-                   'recipeID' => $recipeID));
+                    $listDetailNew->exchangeArray(array('listID' => $listID,                                                
+                   'recipeID' => $recipeID)); //CVL3                   
 
+                    //CVL3 - check if recipe is already in list is done in this function
                     $this->getListDetailTable()->saveListDetail($listDetailNew);
                                    
-                    //CVL TODO there should be a success message, validation?
+                    //CVL no validation, no info if actually inserted
                     //echo "<script>alert('Recipe added to favorite list!');</script>";
                    
                 }else{
@@ -283,7 +289,75 @@ namespace Recipe\Controller;
                  throw new \Exception("Favorite Recipe - no list found for $userID");
                 }          
                     
-                return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+                return $this->redirect()->toRoute('list', array('action' => 'viewList')); //CVL3 working with new entry?
+               
+                //return $this->redirect()->toRoute('recipe', array('action' => 'index')); //CVL3
         }//check if user is logged-in
     } //method end
+    
+    
+    
+    /**
+     * CVL3 ins
+     * view the recipes of a list
+     * only for logged-in user, feature on view is only provided for logged-in user
+     */
+    public function viewlistAction()
+     {
+             //CVL3 TODO same code as above
+         //get default list of user
+            if($_SESSION['user'] != "") {                                       
+                $userID = $_SESSION['user']; //assumption user is the userid  
+                
+                $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
+                $listID = 0; //CVL3            
+                
+                if ( $list != null ){ //create default list ins CVL3 
+                $listID = $list->listID;
+                
+                }else {//create default list
+           
+                    $listNew = new Lists();                
+                    //use default text for name and description of list
+                    $listName = "favoriteList";
+                    $listDescription = "Default list for user";
+                    $listNew->exchangeArray(array('createUserID' => $userID, 
+                        'listName' => $listName,                                                
+                        'listDescription' => $listDescription));
+                    
+                    
+                    //returns id of new list
+                    $listID = $this->getListsTable()->saveList($listNew);                     
+                    $list = $this->getListsTable()->getListsByUser($userID); //data of list necessary
+                }
+                
+                if ($list != null){
+                                        
+                    //the user has now a list 
+                    //getListDetails
+                    $listDetailEntities = $this->getListDetailTable()->getListDetailForList($list->listID);
+                    //containers
+                    $listDetails = array();
+                    $recipes = array();
+                    $difficulties = array();
+                    
+                    //get recipeData for included recipes
+                    foreach($listDetailEntities as $listDetail) {                                                
+                        $listDetails[$listDetail->listID] = $listDetail;                         
+                        $recipes[$listDetail->recipeID] = $this->getRecipeTable()->getRecipe($listDetail->recipeID);                          
+                    }
+                             
+
+                    foreach($recipes as $recipe) { 
+                        $recipes[$recipe->recipeID] = $recipe;                        
+                        $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
+                    }    
+                }
+                
+         return new ViewModel(array(
+             'list' => $list, 'recipes' => $recipes,
+             'difficulties' => $difficulties,
+         ));
+            } //check loggin / session
+     }
 }   
