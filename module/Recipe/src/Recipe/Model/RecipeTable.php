@@ -70,7 +70,7 @@ namespace Recipe\Model;
              $id = $this->tableGateway->lastInsertValue;
          } else {
              if ($this->getRecipe($id)) {
-                 $this->tableGateway->update($data, array('recipeID' => $recipeID));
+                 $this->tableGateway->update($data, array('recipeID' => $id));
              } else {
                  throw new \Exception('Recipe id does not exist');
              }

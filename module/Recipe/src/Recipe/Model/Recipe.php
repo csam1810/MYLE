@@ -36,6 +36,12 @@ namespace Recipe\Model;
          $this->difficultyID = (!empty($data['difficultyID'])) ? $data['difficultyID'] : null;
          $this->createUserID  = (!empty($data['createUserID'])) ? $data['createUserID'] : null;
      }
+     
+     public function getArrayCopy()
+     {
+         return get_object_vars($this);
+     }
+
 
     public function getInputFilter() {
          if (!$this->inputFilter) {
@@ -43,7 +49,7 @@ namespace Recipe\Model;
 
              $inputFilter->add(array(
                  'name'     => 'id',
-                 'required' => true,
+                 'required' => false,
                  'filters'  => array(
                      array('name' => 'Int'),
                  ),

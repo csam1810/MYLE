@@ -32,12 +32,17 @@ class DifficultiesTable {
 
      public function getDifficultyName($difficultyID)
      {
+         return $this->getDifficulty($difficultyID)->difficultyName;
+     }
+     
+     public function getDifficulty($difficultyID)
+     {
          $rowset = $this->tableGateway->select(array('difficultyID' => $difficultyID));
          $row = $rowset->current();
          if (!$row) {
              throw new \Exception("Could not find name for difficulty name for key $difficultyID (DifficultiesTable)"); //CVL3
              //throw new \Exception("Could not find row $difficultyID"); //CVL3
          }
-         return $row->difficultyName;
+         return $row;
      }
 }

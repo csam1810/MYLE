@@ -17,6 +17,7 @@ use Recipe\Model\DifficultiesTable;
 use Zend\Form\Fieldset;
 use Recipe\Model\Difficulties;
 
+use Zend\Stdlib\Hydrator\ArraySerializable;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class DifficultyFieldset extends Fieldset {
@@ -25,8 +26,8 @@ class DifficultyFieldset extends Fieldset {
     {
         parent::__construct('difficultyID');
         
-        $this->setHydrator(new ClassMethodsHydrator(false));
         $this->setObject(new Difficulties());
+        $this->setHydrator(new ArraySerializable());
         
         $difficulties = $difficultiesTable->fetchAll();
         
@@ -48,4 +49,5 @@ class DifficultyFieldset extends Fieldset {
          ));
         
     }
+   
 }

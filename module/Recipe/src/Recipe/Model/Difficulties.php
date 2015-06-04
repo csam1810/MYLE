@@ -23,4 +23,9 @@ class Difficulties {
         $this->difficultyID  = (!empty($data['difficultyID'])) ? $data['difficultyID'] : null;
         $this->difficultyName    = (!empty($data['difficultyName'])) ? $data['difficultyName'] : null;
     }
+    
+    public function getArrayCopy()
+     {
+         return get_object_vars($this);
+     }
 }

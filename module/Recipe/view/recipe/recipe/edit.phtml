@@ -13,16 +13,14 @@
  * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
  */
 if(strcmp($_SESSION['user'], "") != 0) {
- $title = 'Create new recipe';
+ $title = 'Edit recipe';
  $this->headTitle($title);
 
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
- <a href="<?php echo $this->url('recipe',
-             array('action'=>'createNewIngredient'));?>">Create a new ingredient</a>
  <br>
  <?php
- $form->setAttribute('action', $this->url('recipe', array('action' => 'createRecipe')));
+ $form->setAttribute('action', $this->url('recipe', array('action' => 'edit', 'recipeID' => $recipeID)));
  $form->prepare();
 
  echo "<br>";
@@ -32,26 +30,9 @@ if(strcmp($_SESSION['user'], "") != 0) {
  echo $this->formRow($form->get('recipeName'));
  echo "<br>";
  echo $this->formRow($form->get('description'));
+ //echo "<br>";
+ //echo $this->formCollection($form->get('ingredients'));
  echo "<br>";
- echo $this->formCollection($form->get('ingredients'));
- echo "<br>";
- ?>
- <button onclick="return addIngredientFieldset()">I need more ingredients!</button>
- <br>
- <br>
- <script>
-     function addIngredientFieldset() {
-         var currentCount = $('form > fieldset > fieldset').length;
-         var template = $('form > fieldset > span').data('template');
-         template = template.replace(/__ingredientGroup__/g, currentCount);
-         //$('form > fieldset > fieldset')
-         $("#ingredientGroupFieldset").append(template);
-
-         return false;
-     }
- </script>
- 
- <?php
  echo $this->formRow($form->get('instructions'));
  echo "<br>";
  echo $this->formRow($form->get('duration'));
@@ -62,5 +43,5 @@ if(strcmp($_SESSION['user'], "") != 0) {
  echo $this->form()->closeTag();
 
 } else {
-    echo "Access forbidden! To be able to create recipes you must be logged in!";
+    echo "Access forbidden! To be able to edit recipes you must be logged in!";
 }
