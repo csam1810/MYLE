@@ -13,8 +13,20 @@
          //CVL3 ins
          //CVL3 TODO space between links
          echo "<a href=".$this->url('list', array('action'=>'viewList')).">View favorite recipes</a>";
-     }
-     ?>     
+       
+         if(@$_POST['showMyOwnRecipes']){
+         ?>    
+            <form action="" method="POST" style="position: absolute;right: 120px;">
+                  <input type="submit" name="showMyAllRecipes" Value="Show all recipes" style="background-color: transparent;color: blue;border: none;">
+            </form>
+         <?php }
+         else{ ?>
+            <form action="" method="POST" style="position: absolute;right: 120px;">
+                  <input type="submit" name="showMyOwnRecipes" Value="Show my own recipes" style="background-color: transparent;color: blue;border: none;">
+            </form>
+         <?php }
+    
+    }?>     
  </p>
 
  <table class="table">
@@ -24,7 +36,10 @@
      <th>Difficulty</th>
      <th>&nbsp;</th>
  </tr>
- <?php foreach ($recipes as $recipe) : ?>
+ <?php if(@$_POST['showMyOwnRecipes']){
+            foreach ($recipes as $recipe) : 
+               if(strcmp($_SESSION['user'],$recipe->createUserID) == 0) {
+     ?>
  <tr>
      <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
      <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
@@ -45,5 +60,32 @@
          ?>
      </td>
  </tr>
- <?php endforeach; ?>
+         <?php }
+        endforeach;?> 
+     <?php
+      }else{
+          foreach ($recipes as $recipe) : 
+     ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
+     <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
+     <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
+     <td>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+
+         <!--CVL there should be some space -->
+         <?php
+            if($_SESSION['user'] != "") {                 
+            echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
+            }
+         ?>
+     </td>
+ </tr>
+     <?php endforeach; 
+     }?>
  </table>
