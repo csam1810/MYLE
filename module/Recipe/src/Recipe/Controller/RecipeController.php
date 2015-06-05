@@ -187,7 +187,13 @@ class RecipeController extends AbstractActionController {
       'recipes' => $recipes, 'difficulties' => $difficulties,
       ));
       } */
-
+    
+    public function deleteAction() {
+        $id = (int) $this->params()->fromRoute('recipeID', 0);
+        $this->getRecipeTable()->deleteRecipe($id);
+        return $this->redirect()->toRoute('recipe');
+    }
+    
     public function editAction() {
 
         $formManager = $this->getServiceLocator()->get('FormElementManager');
@@ -253,10 +259,6 @@ class RecipeController extends AbstractActionController {
         echo "<br>";
         echo $recipe->createUserID;
         echo "<br>";
-    }
-
-    public function deleteAction() {
-        
     }
 
     public function detailedViewAction() {

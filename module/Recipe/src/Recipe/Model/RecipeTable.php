@@ -80,6 +80,6 @@ namespace Recipe\Model;
 
      public function deleteRecipe($recipeID)
      {
-         $this->tableGateway->delete(array('$recipeID' => (int) $recipeID));
+         $this->tableGateway->delete(array('recipeID' => (int) $recipeID));
      }
  }

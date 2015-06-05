@@ -1,0 +1,14 @@
+recipe 1
+
+Short Description:
+description of recipe 1
+
+Ingredient:
+Tomato	5g
+
+Instructions:
+instructions of recipe 1
+
+Difficulty: challenging
+
+Duration: 10 minutes
