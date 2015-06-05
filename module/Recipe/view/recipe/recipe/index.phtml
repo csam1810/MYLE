@@ -51,12 +51,12 @@
          <?php
             if($_SESSION['user'] != "") {                 
             echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
-            }
-         ?>
-         <a href="<?php echo $this->url('recipe',
-             array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
-         <a href="<?php echo $this->url('recipe',
-             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+            ?> 
+            <a href="<?php echo $this->url('recipe',
+            array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
+            <a href="<?php echo $this->url('recipe',
+            array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+        <?php }?>  
      </td>
  </tr>
          <?php }
@@ -76,14 +76,15 @@
          <?php
             if($_SESSION['user'] != "") {                 
             echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
-            }
+            
          ?>
          <?php if(strcmp($_SESSION['user'],$recipe->createUserID) == 0) { ?>
          <a href="<?php echo $this->url('recipe',
              array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
          <a href="<?php echo $this->url('recipe',
              array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
- <?php } ?>
+ <?php }
+            }?>
      </td>
  </tr>
      <?php endforeach; 
