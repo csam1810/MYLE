@@ -46,4 +46,8 @@ namespace Recipe\Model;
          $id = $this->tableGateway->lastInsertValue;
          return $id;
      }
+     
+     public function delete($ingredientID, $recipeID) {
+         $this->tableGateway->delete(array('recipeID' => (int) $recipeID, 'ingredientID' => (int)$ingredientID));
+     }
  }

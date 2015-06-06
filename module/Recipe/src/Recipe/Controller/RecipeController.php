@@ -209,6 +209,7 @@ class RecipeController extends AbstractActionController {
         // if it cannot be found, in which case go to the index page.
         try {
             $recipe = $this->getRecipeTable()->getRecipe($id);
+            $ingredientsResultSet = $this->getIngredientsOfRecipeTable()->getIngredientsForRecipe($recipe->recipeID);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('recipe', array(
                         'action' => 'index'
@@ -218,7 +219,17 @@ class RecipeController extends AbstractActionController {
         $form->bind($recipe);
         $form->get('difficultyID')->get('difficultyID')->setValue($recipe->difficultyID);
         $form->get('submit')->setAttribute('value', 'Edit');
+       
+        $count = 0;
+        $ingredients = array();
+        foreach($ingredientsResultSet as $ingredient) {
+            $ingredients[$count] = $ingredient;
+            $this->getIngredientsOfRecipeTable()->delete($ingredient->ingredientID,$ingredient->recipeID);
+            $count++;
+        }
 
+        $form->get('ingredients')->setCount($count);
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($recipe->getInputFilter());
@@ -230,9 +241,22 @@ class RecipeController extends AbstractActionController {
                 $recipe->difficultyID = $recipe->difficultyID->difficultyID;
                 $this->printRecipe($recipe);
                 $this->getRecipeTable()->saveRecipe($recipe);
+                
+                foreach ($form->get('ingredients') as $ingredientFieldset) {
+                    $ingredientID = $ingredientFieldset->get('ingredientID')->get('ingredientID')->getValue();
+                    $amount = $ingredientFieldset->get('ingredientAmount')->getValue();
+                    $ingredient = new IngredientsOfRecipe();
+
+                    $ingredient->exchangeArray(array('amount' => $amount,
+                        'weightUnitID' => $ingredientFieldset->get('weightUnit')->get('unitName')->getValue(),
+                        'ingredientID' => $ingredientID,
+                        'recipeID' => $id));
+
+                    $this->getIngredientsOfRecipeTable()->saveIngredientsOfRecipe($ingredient);
+                }
 
                 // Redirect to list of recipes
-                return $this->redirect()->toRoute('recipe');
+                return $this->redirect()->toRoute('recipe', array('action' => 'detailedView', 'recipeID' => $id));
             } else {
                 echo "not valid";
             }
@@ -241,6 +265,7 @@ class RecipeController extends AbstractActionController {
         return array(
             'recipeID' => $id,
             'form' => $form,
+            'ingredients' => $ingredients,
         );
     }
     

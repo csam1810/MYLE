@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,36 +11,46 @@
  *
  * @author Alexandra Jäger <alexandra.jaeger@student.uibk.ac.at>
  */
-if(strcmp($_SESSION['user'], "") != 0) {
- $title = 'Edit recipe';
- $this->headTitle($title);
+if (strcmp($_SESSION['user'], "") != 0) {
+    $title = 'Edit recipe';
+    $this->headTitle($title);
+    ?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <br>
+    <?php
+    $form->setAttribute('action', $this->url('recipe', array('action' => 'edit', 'recipeID' => $recipeID)));
+    $form->prepare();
 
- ?>
- <h1><?php echo $this->escapeHtml($title); ?></h1>
- <br>
- <?php
- $form->setAttribute('action', $this->url('recipe', array('action' => 'edit', 'recipeID' => $recipeID)));
- $form->prepare();
+    echo "<br>";
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('recipeID'));
+    echo $this->formHidden($form->get('createUserID'));
+    echo $this->formRow($form->get('recipeName'));
+    echo "<br>";
+    echo $this->formRow($form->get('description'));
+    echo "<br>";
+    //echo $this->formCollection($form->get('ingredients'));
+    $count = 0;
+    foreach ($form->get('ingredients')->getIterator() as $fieldset) {
+        $fieldset->get('ingredientID')->get('ingredientID')->setValue($ingredients[$count]->ingredientID);
+        echo $this->formCollection($fieldset->get('ingredientID'));
+        echo $this->formRow($fieldset->get('ingredientAmount')->setValue($ingredients[$count]->amount));
+        $fieldset->get('weightUnit')->get('unitName')->setValue($ingredients[$count]->weightUnitID);
+        echo $this->formCollection($fieldset->get('weightUnit'));
+        $count++;
+    }
 
- echo "<br>";
- echo $this->form()->openTag($form);
- echo $this->formHidden($form->get('recipeID'));
- echo $this->formHidden($form->get('createUserID'));
- echo $this->formRow($form->get('recipeName'));
- echo "<br>";
- echo $this->formRow($form->get('description'));
- //echo "<br>";
- //echo $this->formCollection($form->get('ingredients'));
- echo "<br>";
- echo $this->formRow($form->get('instructions'));
- echo "<br>";
- echo $this->formRow($form->get('duration'));
- echo "<br>";
- echo $this->formCollection($form->get('difficultyID'));
- echo "<br>";
- echo $this->formSubmit($form->get('submit'));
- echo $this->form()->closeTag();
-
+    // Render the collection template
+    echo $this->formCollection()->renderTemplate($form->get('ingredients'));
+    echo "<br>";
+    echo $this->formRow($form->get('instructions'));
+    echo "<br>";
+    echo $this->formRow($form->get('duration'));
+    echo "<br>";
+    echo $this->formCollection($form->get('difficultyID'));
+    echo "<br>";
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
 } else {
     echo "Access forbidden! To be able to edit recipes you must be logged in!";
 }
