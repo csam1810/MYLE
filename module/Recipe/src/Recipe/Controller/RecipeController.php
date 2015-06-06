@@ -214,9 +214,9 @@ class RecipeController extends AbstractActionController {
                         'action' => 'index'
             ));
         }
-
-        //$form = new CreateRecipeForm();
+        
         $form->bind($recipe);
+        $form->get('difficultyID')->get('difficultyID')->setValue($recipe->difficultyID);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
