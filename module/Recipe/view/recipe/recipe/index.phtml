@@ -7,6 +7,7 @@
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
  <p>
+     <?php echo $this->navigation()->breadcrumbs()->render(); ?>
      <?php
      if(strcmp($_SESSION['user'],"") != 0) {
          echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>";

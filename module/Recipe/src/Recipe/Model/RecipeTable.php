@@ -57,6 +57,7 @@ namespace Recipe\Model;
      {
          $data = array(
              'instructions' => $recipe->instructions,
+             'description' => $recipe->description,
              'recipeName'  => $recipe->recipeName,
              'duration' => $recipe->duration,
              'difficultyID' => $recipe->difficultyID,
