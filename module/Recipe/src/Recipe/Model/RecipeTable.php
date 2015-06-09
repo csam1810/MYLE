@@ -37,21 +37,27 @@ namespace Recipe\Model;
          return $row;
      }
      
-     /*CV: ins get recipes by name for searching
-      * result can be >=0
-        extend ability to search 
+     /*CV: ins 
+      * get recipes by name for searching - now only exact name without space
+      * result can be >=0 => set of recipes
+        TODO extend ability to search 
         "SELECT * FROM student WHERE name LIKE '%John%'";    
-        
-      * is cast necessary for string?
-      *       */
+     //CVL5*/
      
-     /*
       public function getRecipeByName($searchTerm)
      {
-         $recipeName  = (string) $searchTerm;
-         $rowset = $this->tableGateway->select(array('recipeName' => $recipeName));                  
-         return $resultSet;         
-     }*/
+          //http://framework.zend.com/manual/current/en/modules/zend.db.sql.html         
+         //not working, probably own sql select with where
+         $sqlTerm = '%'.$searchTerm.'%';
+         
+         $spec = function (Where $where) {
+         $where->like('recipeName', $sqlTerm);         
+         };
+    
+         //$rowset = $this->tableGateway->select->where($spec);
+         $rowset = $this->tableGateway->select(array('recipeName' => $searchTerm)); 
+         return $rowset;         
+     }
 
      public function saveRecipe(Recipe $recipe)
      {

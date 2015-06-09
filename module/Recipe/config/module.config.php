@@ -32,7 +32,22 @@
                      ),
                  ),
              ),
-             
+//CVL 4 ins, path now changed for normal list from list to list/view-list
+             'list' => array(
+                 'type'    => 'segment',
+                 'options' => array(
+                     'route'    => '/list[/:action][/:recipeID]',
+                     'constraints' => array(
+                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                         'recipeID'     => '[0-9]+',
+                     ),
+                     'defaults' => array(
+                         'controller' => 'Recipe\Controller\Recipe',
+                         'action'     => 'view-list',
+                     ),
+                 ),
+             ),
+             /* CVL4 del
               'list' => array(
                  'type'    => 'literal',
                  'options' => array(
@@ -42,7 +57,26 @@
                          'action'     => 'view-list',                     
                  ),
              ),
-         ),
+         ),*/ 
+//CVL5             
+              'search' => array(
+                 'type'    => 'segment',
+                 'options' => array(
+                     'route'    => '/search[/:action][/:searchTerm]',
+                     'constraints' => array(
+                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                         'searchTerm' => '[a-zA-Z0-9_-]*',
+                     ),
+                     'defaults' => array(
+                         'controller' => 'Recipe\Controller\Recipe',
+                         'action'     => 'search',
+                     ),
+                 ),
+             ),
+             
+              
+             
+                  
      ),
 ),
 

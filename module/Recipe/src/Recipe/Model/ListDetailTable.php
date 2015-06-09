@@ -27,8 +27,8 @@ namespace Recipe\Model;
      //CVL not yet used
      public function getListDetailForRecipe($recipeID)
      {
-         $recipeID  = (int) $recipeID;
-         $rowset = $this->tableGateway->select(array('recipeID' => $recipeID));
+         $recipeIDTemp  = (int) $recipeID; //CVL4 upd added Temp
+         $rowset = $this->tableGateway->select(array('recipeID' => $recipeIDTemp)); //CVL4 upd added Temp
          return $rowset;         
      }
      
@@ -36,36 +36,60 @@ namespace Recipe\Model;
     
      public function getListDetailForList($listID)
      {
-         $listID  = (int) $listID;
-         $rowset = $this->tableGateway->select(array('listID' => $listID));
+         $listIDTemp  = (int) $listID; //CVL4 upd added Temp
+         $rowset = $this->tableGateway->select(array('listID' => $listIDTemp)); //CVL4 upd added Temp
          return $rowset;         
      }
      
-     //ins CVL3
+     //CVL 4
       public function getListDetail($listID, $recipeID)
-     {
+     {  
          $listID  = (int) $listID;
          $recipeID  = (int) $recipeID;
-         $row = null;
-         $rows = $this->tableGateway->select(array('listID' => $listID, 'recipeID' => $recipeID));
-         return $row;         
+         $rowset = $this->tableGateway->select(array('listID' => $listID, 'recipeID' => $recipeID));
+         $row = null; //CVL4
+         $row = $rowset->current();    
+         return $row;
      }
+     
      
      //CVL
      public function saveListDetail(ListDetail $listDetail)
      {
+         //CVL4 upd added int, remove , after recipeID
          $data = array(
-             'listID' => $listDetail->listID,             
-             'recipeID' => $listDetail->recipeID,
+             'listID' => (int) $listDetail->listID,             
+             'recipeID' => (int) $listDetail->recipeID
          );
 
          //CVL3
          //check if already in database, meaning recipe already added to list
-         $listDetailinDB = $this->getListDetail($listDetail->listID, $listDetail->recipeID);
-         if ($listDetailinDB == null){
-         $this->tableGateway->insert($data);
+                  
+         if ($this->getListDetail($listDetail->listID, $listDetail->recipeID) == null) {
+            $this->tableGateway->insert($data);                  
+         } else {                             
+             //nothing happens when already, list content is shown anyway
+            //throw new \Exception("Recipe already in list $listDetail->listID, $listDetail->recipeID");                
          }
          //CVL TODO return data necessary? id would be the combination of listid and recipeid  
-         //no information for caller if data were inserted or already in DB 
+         //now no information for caller if data were inserted or already in DB 
      }
- }
+     
+     
+     //CVL4 Delete a recipe from a list     
+     //check if in db
+     public function removeRecipeFromList($listID, $recipeID)
+     {        
+           $data = array(
+             'listID' => (int) $listID,             
+             'recipeID' => (int) $recipeID
+              );
+                   
+         if ($this->getListDetail($listID, $recipeID) == null) {
+             //should not happen
+             throw new \Exception("Recipe is not in list with listID $listID recipeID $recipeID");             
+         } else {                        
+                $this->tableGateway->delete($data);                             
+         }
+     }
+ }//class

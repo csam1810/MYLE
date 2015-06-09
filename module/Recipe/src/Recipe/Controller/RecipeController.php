@@ -13,10 +13,13 @@ use Zend\View\Model\ViewModel;
 use Recipe\Model\Recipe;
 use Recipe\Model\IngredientsOfRecipe;
 use Recipe\Model\Ingredient;
-use Recipe\Model\Lists;                //ins CVL
-use Recipe\Model\ListDetail;           //ins CVL
+use Recipe\Model\Lists;                 //ins CVL
+use Recipe\Model\ListDetail;            //ins CVL
+use Recipe\Model\Search;                //ins CVL5
 use Zend\InputFilter\InputFilter;
 use Recipe\Form\CreateRecipeForm;
+use Recipe\Form\SearchForm;             //ins CVL5
+
 
 class RecipeController extends AbstractActionController {
 
@@ -26,7 +29,7 @@ class RecipeController extends AbstractActionController {
     protected $weightUnitsTable;
     protected $difficultiesTable;
     protected $listsTable;                     //ins CVL
-    protected $listDetailTable;                //ins CVL
+    protected $listDetailTable;                //ins CVL    
 
     public function getDifficultiesTable() {
         if (!$this->difficultiesTable) {
@@ -96,7 +99,7 @@ class RecipeController extends AbstractActionController {
             $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
         }
         return new ViewModel(array(
-            'recipes' => $recipes, 'difficulties' => $difficulties,
+            'recipes' => $recipes, 'difficulties' => $difficulties,                 
         ));
     }
 
@@ -170,23 +173,61 @@ class RecipeController extends AbstractActionController {
         return array('form' => $form);
     }
 
-    /* CV: getRecipesByName
-
-      public function getSearchResultAction()
+     //CVL5: search Form
+      public function searchAction()
       {
+          
+         $form = new SearchForm();
+         $form->get('submit')->setValue('search');
 
-      $recipeEntities = $this->getRecipeTable()->getRecipeByName();
-      //containers
-      $recipes = array();
-      $difficulties = array();
-      foreach($recipeEntities as $recipe) {
-      $recipes[$recipe->recipeID] = $recipe;
-      $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
+         $request = $this->getRequest();
+         
+         if ($request->isPost()) {
+             //after submitted
+             $search = new Search();
+             $form->setInputFilter($search->getInputFilter());
+             $form->setData($request->getPost());
+
+             if ($form->isValid()) {
+                 $search->exchangeArray($form->getData());
+                 $searchTerm = $search->searchTerm;                 
+        
+        return $this->redirect()->toRoute('search', 
+                array('action' => 'searchResult', 'searchTerm' => $searchTerm));
+        
+             }
+         }
+         return array('form' => $form);  
       }
-      return new ViewModel(array(
-      'recipes' => $recipes, 'difficulties' => $difficulties,
-      ));
-      } */
+      
+      
+      //CVL5: search result
+      //TODO problem with spaces
+      //currently only exact search      
+      //TODO if user should use wildcards extend route
+      public function searchResultAction()
+      {         
+          
+        //last value '' is default value 
+        $searchTerm = $this->params()->fromRoute('searchTerm', '');                                               
+        $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
+        //containers
+        $recipes = array();
+        $difficulties = array();
+        foreach ($recipeEntities as $recipe) {
+            $recipes[$recipe->recipeID] = $recipe;
+            $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
+        }
+        
+        
+        return new ViewModel(array(
+            'recipes' => $recipes, 'difficulties' => $difficulties,                 
+        ));
+        }
+      
+      
+      
+      
     
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('recipeID', 0);
@@ -373,6 +414,55 @@ class RecipeController extends AbstractActionController {
 
 //method end
 
+//CVL4 
+    /**
+     * Remove a recipe from a list
+     * Assumption: A user already  has a list
+     * Assumption: There is only 1 list
+     */
+     public function removeFromListAction() {      
+    
+        //get id of recipe which should be removed from list
+        $recipeID = (int) $this->params()->fromRoute('recipeID');
+
+        //get default list of user
+        if ($_SESSION['user'] != "") {
+            $userID = $_SESSION['user']; //assumption user is the userid  
+
+            $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
+
+            $listID = 0;
+            if ($list == null) {
+                throw new \Exception("ERROR: Remove recipe $recipeID from list $listID - no list available");
+                //do nothing, not possible                
+            } else { 
+                $listID = (int) $list->listID; 
+                
+                //$listDetail = new ListDetail();
+                //$listDetail->exchangeArray(array('listID' => $listID,
+                 //   'recipeID' => $recipeID));
+                
+                //check if exists in in function!
+                //check to prevent exception
+                //$listDetailFromDB = null;                                   
+                //$listDetailFromDB = $this->getListDetailTable()->getListDetail($listID, $recipeID);
+                
+                //if ($listDetailFromDB != null){
+                //info throw new \Exception("remove recipe $recipeID from list $listID");
+                    $this->getListDetailTable()->removeRecipeFromList($listID, $recipeID);
+                  
+                //}else{                  throw new \Exception("ERROR: remove recipe $recipeID from list $listID, not in list, no listdetail");}
+
+                //CVL no validation, no info if actually removed
+                //echo "<script>alert('Recipe removed from favorite list!');</script>";
+            }
+            
+            //refresh current favorite list
+            return $this->redirect()->toRoute('list', array('action' => 'viewList')); //CVL3 working with new entry?
+            //return $this->redirect()->toRoute('recipe', array('action' => 'index')); //CVL3
+        }//check if user is logged-in
+    }
+    
     /**
      * CVL3 ins
      * view the recipes of a list

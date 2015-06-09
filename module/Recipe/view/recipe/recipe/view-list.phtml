@@ -43,9 +43,10 @@ if(strcmp($_SESSION['user'], "") != 0) {
      <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
      <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
      <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
-     <td>        
-         <!--a href="<!--?php echo $this->url('recipe',
-             array('action'=>'removeFromList', 'recipeID' => $recipe->recipeID));?>">remove from list </a-->
+     <td>
+         <!--CVL4-->
+         <a href="<?php echo $this->url('list',
+             array('action'=>'removeFromList', 'recipeID' => $recipe->recipeID));?>">remove from list </a>
      </td>
  </tr>
  <?php endforeach; ?>

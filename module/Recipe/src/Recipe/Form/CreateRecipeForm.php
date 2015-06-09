@@ -95,7 +95,8 @@ class CreateRecipeForm extends Form {
 
         $this->add(array(
             'name' => 'difficultyID',
-        ));
+        ));    
+        
     }
 
     public function init() {
