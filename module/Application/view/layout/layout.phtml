@@ -44,9 +44,11 @@ if(@$_POST['logout']){
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('MYLE') ?></a>
                 </div>
                 <div class="collapse navbar-collapse">
+                    <!-- AJ: comment this part so that we only have one link to the homepage
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                     </ul>
+                    -->
            <?php
                 
                 $u = getLoginDisplayName();
@@ -64,12 +66,31 @@ if(@$_POST['logout']){
                     </span>
                    
            <?php endif; ?>
+                    
+                    <!-- AJ: for navigation-->
+                    <div class="collapse navbar-collapse">
+                        <?php
+                        // <-- Update this !!
+                        echo $this->navigation('navigation')
+                                ->menu()
+                                ->setMinDepth(0)
+                                ->setMaxDepth(0)
+                                ->setUlClass('nav navbar-nav');
+                        ?>
+                    </div>
                   
                     
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
         <div class="container">
+            <!-- AJ: navigation breadcrumbs -->
+            <?php
+            echo $this->navigation('navigation') // <-- Update this!!
+                    ->breadcrumbs()
+                    ->setMinDepth(1)
+                    ->setPartial('partial/breadcrumb.phtml');
+            ?>
             <?php echo $this->content; ?>
             <hr>
             <footer>

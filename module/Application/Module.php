@@ -19,6 +19,15 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
+        //AJ: add this so that the menu item "Favorite list" is not displayed to non-logged in users
+        $application = $e->getApplication();
+        $serviceManager = $application->getServiceManager();
+        if (strcmp($_SESSION['user'], "") == 0) {
+            $container = $serviceManager ->get('navigation');
+            $logoutPage = $container->findBy('route' , 'list');
+            $container->removePage($logoutPage);
+        }
     }
 
     public function getConfig()
