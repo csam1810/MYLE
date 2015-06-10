@@ -23,22 +23,41 @@ class SearchForm extends Form {
 
         $this->setHydrator(new ArraySerializable());        
 
+        
+         //CVL 7
+         //creation date is not shown!
+         //'date'          => 'Zend\Form\Element\Date',
+         //'dateselect'    => 'Zend\Form\Element\DateSelect',
+         // 'range'         => 'Zend\Form\Element\Range',        
+         //'image'         => 'Zend\Form\Element\Image',               
+         
         $this->add(array(
             'name' => 'searchTerm',
             'type' => 'Text',
             'options' => array(
-                'label' => 'searchTerm',
+                'label' => 'recipe name',
             ),
             'attributes' => array(
                 'class' => 'form-control',
             )
         ));              
-        
+        //CVL7
+       /*//CVL9  $this->add(array(
+            'name' => 'duration',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'duration smaller than',
+            ),
+            'attributes' => array(
+                'class' => 'form-control',
+            )
+        ));
+  */
          $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'SearchRecipe',
+                'value' => 'show',
                 'id' => 'submitbutton',
             ),
         ));

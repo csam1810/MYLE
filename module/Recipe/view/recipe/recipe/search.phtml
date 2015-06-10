@@ -10,19 +10,71 @@
  * Description of search-term 
  */
 
-    $title = 'Search for recipe';
-    $this->headTitle($title);
+
+    //CVL8 delete search-result if problem with error messages is solved
+    //CVL7
+    //POST has a value after submitting! before it is empty or not defined?
+    //strcmp: 0 - if the two strings are equal
+    //!!! value of submit button, is label of submit button as well
+    $showResult = FALSE;    
+    $outputShowResult = strcmp(@$_POST['submit'],'show');
+    if ($outputShowResult == 0){
+        $showResult = TRUE;
+    }
+    
+    //echo "POST['submit']=".@$_POST['submit'];
+    //echo "boolean showResult=".$showResult;
+    //CVL6
+    if($showResult){ //show search result        
+            $title = 'Search result ';                      
+     }else{
+            $title = 'Search for recipe';
+     }
+     
+           $this->headTitle($title);
     ?>
+
+
     <h1><?php echo $this->escapeHtml($title); ?></h1>
     <br>
+    
+    
     <?php
+    //CVL6
+    if($showResult){ //show search result?>
+ <table class="table">
+ <tr>
+     <th>Recipe Name</th>
+     <th>Duration</th>
+     <th>Difficulty</th>
+     <th>&nbsp;</th>
+ </tr>
+ 
+ <?php foreach ($recipes as $recipe) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
+     <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
+     <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>     
+ </tr>
+ <?php endforeach; ?>
+
+ </table>
+ 
+ <?php   } 
+ else {
+     
+    //show search form
     $form->setAttribute('action', $this->url('search', array('action' => 'search')
             ));    
     $form->prepare();
 
     echo "<br>";
-    echo $this->form()->openTag($form);    
+    echo $this->form()->openTag($form); 
     echo $this->formRow($form->get('searchTerm'));
     echo "<br>";
+    //CVL9 echo $this->formRow($form->get('duration'));
+    //CVL9 echo "<br>";
     echo $this->formSubmit($form->get('submit'));    
-    echo $this->form()->closeTag();
+    echo $this->form()->closeTag();     
+    } 
+?>         

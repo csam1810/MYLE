@@ -175,41 +175,81 @@ class RecipeController extends AbstractActionController {
 
      //CVL5: search Form
       public function searchAction()
-      {
-          
-         $form = new SearchForm();
-         $form->get('submit')->setValue('search');
-
+      {          
+         $form = new SearchForm();                                   
+         $form->get('submit')->setValue('show');//CVL7
          $request = $this->getRequest();
          
-         if ($request->isPost()) {
-             //after submitted
+         
+         if ($request->isPost()) {                
+             //after submitted             
              $search = new Search();
              $form->setInputFilter($search->getInputFilter());
              $form->setData($request->getPost());
-
-             if ($form->isValid()) {
-                 $search->exchangeArray($form->getData());
-                 $searchTerm = $search->searchTerm;                 
+ 
+             if ($form->isValid()) {                 
+                 $search->exchangeArray($form->getData());                 
+                 
+                 $searchTerm = $search->searchTerm;   ///CVL6 del
+                 //CVL9 $duration = $search->duration; //CVL7
+                 //throw new \Exception("search term= $searchTerm duration= $duration");
+               
+        //CVL8 besser?                 
+        //$searchTerm = (string)$form->get('searchTerm')->getValue(); ///CVL6 ins
+        //should use inputFilter
+        //$searchTerm = (string)$form->getInputFilter()->getValue('searchTerm'); ///CVL6 ins
         
-        return $this->redirect()->toRoute('search', 
-                array('action' => 'searchResult', 'searchTerm' => $searchTerm));
+                 
+        //CVL7
+        /*return $this->redirect()->toRoute('search', 
+                array('action' => 'searchResult', 'searchTerm' => $searchTerm));        
+        */
+        //begin of ins CVL7        
+        //CVL8 TODO recipeName at least 3 characters even filter for searchform set to min = 0        
         
-             }
-         }
+         
+                        
+        //CVL9 if ($duration > 0){
+          //CVL9 $recipeEntities = $this->getRecipeTable()->getRecipeByDuration($duration);                    
+          //  $recipeEntities = $this->getRecipeTable()->getRecipeByNameAndDuration($searchTerm, $duration); //check name length!
+        //CVL9 }else{
+            //throw new \Exception("search term= $searchTerm");
+            //if (strlen($searchTerm) > 0){ //if not mandatory incl min length >0
+            $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
+            //}
+        //CVL9 }
+        
+        //containers
+        $recipes = array();
+        $difficulties = array();        
+        foreach ($recipeEntities as $recipe) {
+            $recipes[$recipe->recipeID] = $recipe;
+            $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
+        }
+                        
+        return new ViewModel(array(
+            'recipes' => $recipes, 'difficulties' => $difficulties                
+        ));
+        //end of ins CVL7
+             }//form isValid                
+         }//witin 
+         ////CVL8 not possible because at the beginning same code, would delete name
+         //CVL8 TODO how to react when input mistake happen! reset post?
+         //$form->get('submit')->setValue('');  
          return array('form' => $form);  
       }
       
       
       //CVL5: search result
-      //TODO problem with spaces
-      //currently only exact search      
+      //CVL7: method obsolet, CVL8: delete when problem with error messages is solved
+      //TODO problem with spaces 
       //TODO if user should use wildcards extend route
       public function searchResultAction()
       {         
           
         //last value '' is default value 
-        $searchTerm = $this->params()->fromRoute('searchTerm', '');                                               
+        //$searchTerm = $this->params()->fromRoute('searchTerm', ''); //CVL6 del
+        $searchTerm = $this->params()->fromRoute('searchTerm');   //CVL6 ins                                            
         $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
         //containers
         $recipes = array();
@@ -362,9 +402,8 @@ class RecipeController extends AbstractActionController {
      * Assumption: only 1 list for each user
      */
     //asumption that user is logged in, ok because feature only available when logged-in
-    //TODO if recipe already in favorite list
-    //TODO view recipe
-    //TODO ! get back to ?? start page
+    //TODO view recipe?
+    //TODO navigation back
     public function addToListAction() {
         //get id of recipe which should be added to list
         $recipeID = (int) $this->params()->fromRoute('recipeID');
@@ -437,24 +476,8 @@ class RecipeController extends AbstractActionController {
                 //do nothing, not possible                
             } else { 
                 $listID = (int) $list->listID; 
-                
-                //$listDetail = new ListDetail();
-                //$listDetail->exchangeArray(array('listID' => $listID,
-                 //   'recipeID' => $recipeID));
-                
-                //check if exists in in function!
-                //check to prevent exception
-                //$listDetailFromDB = null;                                   
-                //$listDetailFromDB = $this->getListDetailTable()->getListDetail($listID, $recipeID);
-                
-                //if ($listDetailFromDB != null){
-                //info throw new \Exception("remove recipe $recipeID from list $listID");
-                    $this->getListDetailTable()->removeRecipeFromList($listID, $recipeID);
-                  
-                //}else{                  throw new \Exception("ERROR: remove recipe $recipeID from list $listID, not in list, no listdetail");}
-
-                //CVL no validation, no info if actually removed
-                //echo "<script>alert('Recipe removed from favorite list!');</script>";
+                                
+                    $this->getListDetailTable()->removeRecipeFromList($listID, $recipeID);                                  
             }
             
             //refresh current favorite list

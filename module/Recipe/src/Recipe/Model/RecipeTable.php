@@ -10,6 +10,8 @@ namespace Recipe\Model;
 
  use Zend\Db\TableGateway\TableGateway;
  use Zend\Db\TableGateway\AbstractTableGateway;
+ use Zend\Db\Adapter\Driver\ResultInterface;    //ins CVL6
+ use Zend\Db\ResultSet\ResultSet;                //ins CVL6
 
  class RecipeTable extends AbstractTableGateway
  {
@@ -38,26 +40,83 @@ namespace Recipe\Model;
      }
      
      /*CV: ins 
-      * get recipes by name for searching - now only exact name without space
+      * get recipes by name
       * result can be >=0 => set of recipes
-        TODO extend ability to search 
+      * search for recipes where searchTerm is substring of recipeName      
         "SELECT * FROM student WHERE name LIKE '%John%'";    
      //CVL5*/
-     
+    
       public function getRecipeByName($searchTerm)
      {
-          //http://framework.zend.com/manual/current/en/modules/zend.db.sql.html         
-         //not working, probably own sql select with where
-         $sqlTerm = '%'.$searchTerm.'%';
+      
+         //search exactly by name, obsolet
+         //$rowset = $this->tableGateway->select(array('recipeName' => $searchTerm)); 
          
-         $spec = function (Where $where) {
-         $where->like('recipeName', $sqlTerm);         
-         };
+        //begin of ins CVL6
+         $db = getAdapter();
+         //is working: $statement = $db->createStatement("SELECT * FROM Recipe WHERE recipeName='" . $searchTerm . "'");         
+         $statement = $db->createStatement("SELECT * FROM Recipe WHERE recipeName LIKE '%".$searchTerm."%'");
+         $result = $statement->execute();
+         $rowset = new ResultSet;
+         $rowset->initialize($result);
+         
+         //alternative but adapter missing
+         //http://framework.zend.com/manual/current/en/modules/zend.db.sql.html         
+          
+         //source https://samsonasik.wordpress.com/2013/01/15/zend-framework-2-cheat-sheet-zenddb/
+      //$rowset = $this->select(function (Sql\Select $select) use ($searchTerm) {                          
+          
+       //like... 
+       //$select->where->like('recipeName', "%$searchTerm%");
+       
+       //between
+       //$select->where->between('id', 2, 5); //identifier,min,max
+   
+       //NEST
+       //$select->where
+       //             ->AND->NEST->like('firstname', "%$keyword%")
+       //             ->OR->like('lastname', "%$keyword%");
+        
+      //if you will work with
+      //'native' expression, use Sql\Expression
+      //$select->where->notequalTo('name', new Sql\Expression('all(select name from othertableagain)'));     
+      //or use predicate...
+      //$select->where
+       //     ->addPredicate(new Sql\Predicate\Expression('LOWER(user_name) = ?',
+       //                         strtolower($name)));    
     
-         //$rowset = $this->tableGateway->select->where($spec);
-         $rowset = $this->tableGateway->select(array('recipeName' => $searchTerm)); 
+//});
+    //end of ins CVL6
+                  
          return $rowset;         
      }
+     
+     
+     //CVL7
+     //duration smaller equal than
+     /*//CVL9 public function getRecipeByDuration($duration)
+     {
+         $db = getAdapter();         
+         $statement = $db->createStatement("SELECT * FROM Recipe WHERE duration <=".$duration);
+         $result = $statement->execute();
+         $rowset = new ResultSet;
+         $rowset->initialize($result);
+               
+         return $rowset;         
+     }
+     
+       //CVL7
+     //search for recipe name and duration smaller equal than
+     public function getRecipeByNameAndDuration($searchTerm, $duration)
+     {
+         $db = getAdapter();         
+         $statement = $db->createStatement("SELECT * FROM Recipe WHERE recipeName LIKE '%".$searchTerm."%' AND duration <=".$duration);
+         $result = $statement->execute();
+         $rowset = new ResultSet;
+         $rowset->initialize($result);
+               
+         return $rowset;         
+     }*/
 
      public function saveRecipe(Recipe $recipe)
      {
