@@ -218,7 +218,7 @@ class RecipeController extends AbstractActionController {
             }else{
                 //no diff in error messages for invalid or empty
                 $recipeEntities = $this->getRecipeTable()->fetchAll();
-                $typeOfSearch = "all recipes <br>(recipe name and duration empty or not valid)";
+                $typeOfSearch = ": all recipes";
                
                 
                 //CVL10 TODO TODO give back error messages if possible
@@ -246,12 +246,12 @@ class RecipeController extends AbstractActionController {
         $recipes = array();
         $difficulties = array();
         
-        if ($recipeEntities != NULL){ //CVL10? working?
+        //if ($recipeEntities != NULL){ //CVL10? helping?
         foreach ($recipeEntities as $recipe) {
             $recipes[$recipe->recipeID] = $recipe;
             $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
         }
-        }//CVL10 there has to be a return
+        //}//CVL10 there has to be a return
         
         return new ViewModel(array(
             'recipes' => $recipes, 'difficulties' => $difficulties, 'typeOfSearch' => $typeOfSearch 

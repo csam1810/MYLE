@@ -63,16 +63,17 @@ namespace Recipe\Model;
                 //CVL10 - no output when not valid due to using same page for input and result of search
                 //CVL10 - validator that number has to be > 0, not negative
                 
-                //VL10 isInt is also availabel instead of GreaterThan
+                //CVL10 isInt is also availabel instead of GreaterThan
                   $inputFilter->add(array(
                  'name'     => 'duration',
-                 'required' => true,
+                 'required' => false, //CVL11 
                  'filters'  => array(
                      array('name' => 'Int'),
                  ),
                  'validators' => array(
                     array(
-                        'name' => 'GreaterThan',
+                        //'name' => 'GreaterThan', //del CVL11, should be greater than but then error if invalid
+                        'name' => 'isInt', //ins CVL11
                         'options' => array(
                             'min' => 0,
                             'inclusive' => false,

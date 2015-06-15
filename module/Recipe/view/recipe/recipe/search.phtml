@@ -84,6 +84,13 @@
  <?php endforeach; ?>
 
  </table>
+    
+   <?php if (strcmp($typeOfSearch,": all recipes")==0){
+       echo "To search for specific recipes fill in either recipe name, duration or both fields.";
+       echo "<br>";
+       echo "Use a number greater than 0 for the duration.";
+       
+   } ?>
  
  <?php   } 
  else {
@@ -105,4 +112,35 @@
     echo "Without recipe name or duration all recipes will be shown.";
     echo $this->form()->closeTag();     
     } 
-?>         
+?>   
+    
+    
+    <!--CVL11 - layout http://stackoverflow.com/questions/14828405/zf2-form-formating
+ * //submit button missing, list not the right way but could use table?
+$form = $this->form;
+$form->setAttribute('action', $this->url('search', array('action' => 'search')
+            ));  
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<ul class="form-list">
+    <li>
+        <div class="form-control"-->
+            <!--?php echo $this->formlabel($form->get('searchTerm')); ?>
+            <!--?php echo $this->formElementErrors($form->get('searchTerm')) ?-->
+            <!--?php echo $this->formElement($form->get('searchTerm')); ?>
+        </div>
+        <div class="form-control">
+            <!--?php echo $this->formlabel($form->get('duration')); ?>
+            <!--?php echo $this->formElementErrors($form->get('duration')) ?-->
+            <!--?php echo $this->formElement($form->get('duration')); ?>
+        </div>
+     </li>        
+    </ul>
+    <br>
+        <br>
+        Without recipe name or duration all recipes will be shown.
+    <!--?php echo $this->form()->closeTag();
+}
+        ?-->
