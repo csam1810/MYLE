@@ -20,7 +20,6 @@ use Zend\InputFilter\InputFilter;
 use Recipe\Form\CreateRecipeForm;
 use Recipe\Form\SearchForm;             //ins CVL5
 
-
 class RecipeController extends AbstractActionController {
 
     protected $recipeTable;
@@ -29,7 +28,8 @@ class RecipeController extends AbstractActionController {
     protected $weightUnitsTable;
     protected $difficultiesTable;
     protected $listsTable;                     //ins CVL
-    protected $listDetailTable;                //ins CVL    
+    protected $listDetailTable;                //ins CVL  
+    
 
     public function getDifficultiesTable() {
         if (!$this->difficultiesTable) {
@@ -173,101 +173,93 @@ class RecipeController extends AbstractActionController {
         return array('form' => $form);
     }
 
+    
+    
+    
      //CVL5: search Form
       public function searchAction()
       {          
          $form = new SearchForm();                                   
          $form->get('submit')->setValue('show');//CVL7
-         $request = $this->getRequest();
          
+         $request = $this->getRequest();
          
          if ($request->isPost()) {                
              //after submitted             
              $search = new Search();
              $form->setInputFilter($search->getInputFilter());
              $form->setData($request->getPost());
- 
+                                
              if ($form->isValid()) {                 
                  $search->exchangeArray($form->getData());                 
                  
                  $searchTerm = $search->searchTerm;   ///CVL6 del
-                 //CVL9 $duration = $search->duration; //CVL7
-                 //throw new \Exception("search term= $searchTerm duration= $duration");
-               
-        //CVL8 besser?                 
-        //$searchTerm = (string)$form->get('searchTerm')->getValue(); ///CVL6 ins
-        //should use inputFilter
-        //$searchTerm = (string)$form->getInputFilter()->getValue('searchTerm'); ///CVL6 ins
-        
-                 
-        //CVL7
-        /*return $this->redirect()->toRoute('search', 
-                array('action' => 'searchResult', 'searchTerm' => $searchTerm));        
-        */
-        //begin of ins CVL7        
-        //CVL8 TODO recipeName at least 3 characters even filter for searchform set to min = 0        
-        
+                 $duration = $search->duration; //CVL7                              
          
                         
-        //CVL9 if ($duration > 0){
-          //CVL9 $recipeEntities = $this->getRecipeTable()->getRecipeByDuration($duration);                    
-          //  $recipeEntities = $this->getRecipeTable()->getRecipeByNameAndDuration($searchTerm, $duration); //check name length!
-        //CVL9 }else{
-            //throw new \Exception("search term= $searchTerm");
-            //if (strlen($searchTerm) > 0){ //if not mandatory incl min length >0
-            $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
-            //}
-        //CVL9 }
+        //CVL10     
+        //no mandatory values because fields can be empty
         
-        //containers
-        $recipes = array();
-        $difficulties = array();        
-        foreach ($recipeEntities as $recipe) {
-            $recipes[$recipe->recipeID] = $recipe;
-            $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
+        $recipeEntities = NULL; //ins CVL10 working? 
+        $typeOfSearch = "Invalid search input!"; //ins CVL10
+        if ($duration > 0){
+            if (strlen($searchTerm) > 0){
+                $recipeEntities = $this->getRecipeTable()->getRecipeByNameAndDuration($searchTerm, $duration);
+                $typeOfSearch = "for recipe name includes '".$searchTerm."' and duration is smaller than ".$duration." minutes";        
+            }else{
+                $recipeEntities = $this->getRecipeTable()->getRecipeByDuration($duration);                    
+                
+                $typeOfSearch = "for duration smaller than ".$duration." minutes";
+            }                        
+        }else{            
+            if (strlen($searchTerm) > 0){ //if not mandatory incl min length >0
+                $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
+                $typeOfSearch = "for recipe name includes ".$searchTerm; //." length: ".strlen($searchTerm);
+            }else{
+                //no diff in error messages for invalid or empty
+                $recipeEntities = $this->getRecipeTable()->fetchAll();
+                $typeOfSearch = "all recipes <br>(recipe name and duration empty or not valid)";
+               
+                
+                //CVL10 TODO TODO give back error messages if possible
+                //http://framework.zend.com/manual/current/en/modules/zend.validator.html
+                //If isValid() returns FALSE, the getMessages() returns an array of messages explaining the reason(s) for validation failure.
+               //foreach ($validator->getMessages() as $messageId => $message) {
+                //    echo "Validation failure '$messageId': $message\n";              
+//               }
+                //these methods available but returnMessages->getMessages() returns array
+                //but not usable!?
+                //
+                //CVL10 - not working!
+                /*$inputFilterTemp = $search->getInputFilter();
+                $errorMessages = $inputFilterTemp->getInvalidInput(); 
+                
+                foreach ($errorMessages as $errorMessage) {            
+                    //throw new \Exception("Invalid input: $errorMessage");            
+                    $typeOfSearch = $errorMessage;
+                    break;
+        }*/        
+            }
         }
-                        
-        return new ViewModel(array(
-            'recipes' => $recipes, 'difficulties' => $difficulties                
-        ));
-        //end of ins CVL7
-             }//form isValid                
-         }//witin 
-         ////CVL8 not possible because at the beginning same code, would delete name
-         //CVL8 TODO how to react when input mistake happen! reset post?
-         //$form->get('submit')->setValue('');  
-         return array('form' => $form);  
-      }
-      
-      
-      //CVL5: search result
-      //CVL7: method obsolet, CVL8: delete when problem with error messages is solved
-      //TODO problem with spaces 
-      //TODO if user should use wildcards extend route
-      public function searchResultAction()
-      {         
-          
-        //last value '' is default value 
-        //$searchTerm = $this->params()->fromRoute('searchTerm', ''); //CVL6 del
-        $searchTerm = $this->params()->fromRoute('searchTerm');   //CVL6 ins                                            
-        $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
+        
         //containers
         $recipes = array();
         $difficulties = array();
+        
+        if ($recipeEntities != NULL){ //CVL10? working?
         foreach ($recipeEntities as $recipe) {
             $recipes[$recipe->recipeID] = $recipe;
             $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
         }
-        
+        }//CVL10 there has to be a return
         
         return new ViewModel(array(
-            'recipes' => $recipes, 'difficulties' => $difficulties,                 
-        ));
-        }
-      
-      
-      
-      
+            'recipes' => $recipes, 'difficulties' => $difficulties, 'typeOfSearch' => $typeOfSearch 
+        ));        
+             }//form isValid                             
+         }          
+         return array('form' => $form);  
+      }   
     
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('recipeID', 0);

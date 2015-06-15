@@ -93,8 +93,8 @@ namespace Recipe\Model;
      
      
      //CVL7
-     //duration smaller equal than
-     /*//CVL9 public function getRecipeByDuration($duration)
+     //duration smaller than
+     public function getRecipeByDuration($duration)
      {
          $db = getAdapter();         
          $statement = $db->createStatement("SELECT * FROM Recipe WHERE duration <=".$duration);
@@ -105,7 +105,7 @@ namespace Recipe\Model;
          return $rowset;         
      }
      
-       //CVL7
+     //CVL7
      //search for recipe name and duration smaller equal than
      public function getRecipeByNameAndDuration($searchTerm, $duration)
      {
@@ -116,7 +116,7 @@ namespace Recipe\Model;
          $rowset->initialize($result);
                
          return $rowset;         
-     }*/
+     }
 
      public function saveRecipe(Recipe $recipe)
      {

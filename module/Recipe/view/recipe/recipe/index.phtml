@@ -10,27 +10,26 @@
      <?php echo $this->navigation()->breadcrumbs()->render(); ?>
      
      <!--CVL5 for all user-->                    
-      <?php echo "<a href=".$this->url('search', array('action'=>'search' )).">Search for recipes</a>";
+      <?php echo "<a href=".$this->url('search', array('action'=>'search' )).">Search for recipes</a>&nbsp;&nbsp;";
       ?>      
          
      <?php
      if(strcmp($_SESSION['user'],"") != 0) {
-         echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>";
-         //CVL3 ins
-         //CVL3 TODO space between links
-         echo "<a href=".$this->url('list', array('action'=>'viewList')).">View favorite recipes</a>";
+        echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>&nbsp;&nbsp;";
+         //CVL3 ins        
+        echo "<a href=".$this->url('list', array('action'=>'viewList')).">View favorite recipes</a>";
             
-         if(@$_POST['showMyOwnRecipes']){
-         ?>    
+        if(@$_POST['showMyOwnRecipes']){
+        ?>    
             <form action="" method="POST" style="position: absolute;right: 120px;">
                   <input type="submit" name="showMyAllRecipes" Value="Show all recipes" style="background-color: transparent;color: blue;border: none;">
             </form>
-         <?php }
-         else{ ?>
+        <?php }
+        else{ ?>
             <form action="" method="POST" style="position: absolute;right: 120px;">
                   <input type="submit" name="showMyOwnRecipes" Value="Show my own recipes" style="background-color: transparent;color: blue;border: none;">
             </form>
-         <?php }
+        <?php }
     
     }?>     
  </p>
@@ -54,13 +53,13 @@
          <a href="<?php echo $this->url('recipe',
              array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
          <!--CVL there should be some space -->
-         <?php
-            if($_SESSION['user'] != "") {                 
-            echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
+    <?php
+            if($_SESSION['user'] != "") {                            
+            echo "&nbsp <a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite this recipe</a>";                                  
             ?> 
-            <a href="<?php echo $this->url('recipe',
-            array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
-            <a href="<?php echo $this->url('recipe',
+            &nbsp&nbsp<a href="<?php echo $this->url('recipe',
+            array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>              
+            &nbsp&nbsp<a href="<?php echo $this->url('recipe',
             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
         <?php }?>  
      </td>
@@ -81,13 +80,13 @@
          <!--CVL there should be some space -->
          <?php
             if($_SESSION['user'] != "") {                 
-            echo "<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                        
+            echo "&nbsp&nbsp<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite this recipe</a>";                        
             
          ?>
          <?php if(strcmp($_SESSION['user'],$recipe->createUserID) == 0) { ?>
-         <a href="<?php echo $this->url('recipe',
+         &nbsp&nbsp<a href="<?php echo $this->url('recipe',
              array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
-         <a href="<?php echo $this->url('recipe',
+         &nbsp&nbsp<a href="<?php echo $this->url('recipe',
              array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
  <?php }
             }?>

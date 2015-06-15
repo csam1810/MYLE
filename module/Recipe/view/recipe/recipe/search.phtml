@@ -12,23 +12,25 @@
 
 
     //CVL8 delete search-result if problem with error messages is solved
+    //CVL10 deleted search-result.phtml but I should have removed it with git rm
+    //-> removed it over webinterface
+    
     //CVL7
     //POST has a value after submitting! before it is empty or not defined?
     //strcmp: 0 - if the two strings are equal
-    //!!! value of submit button, is label of submit button as well
+    
+    //!!! value of submit button is important, is label of submit button in form as well
     $showResult = FALSE;    
     $outputShowResult = strcmp(@$_POST['submit'],'show');
     if ($outputShowResult == 0){
         $showResult = TRUE;
     }
-    
-    //echo "POST['submit']=".@$_POST['submit'];
-    //echo "boolean showResult=".$showResult;
+        
     //CVL6
     if($showResult){ //show search result        
-            $title = 'Search result ';                      
+            $title = 'Search result '.$typeOfSearch;    //CVL10 upd                   
      }else{
-            $title = 'Search for recipe';
+            $title = 'Search for recipes';            
      }
      
            $this->headTitle($title);
@@ -36,12 +38,19 @@
 
 
     <h1><?php echo $this->escapeHtml($title); ?></h1>
-    <br>
+    <!--br CVL9 del--> 
+    
     
     
     <?php
     //CVL6
-    if($showResult){ //show search result?>
+    
+    if($showResult){ //show search result
+    //CVL 9 ins
+    echo "<a href=".$this->url('search', array('action'=>'search' )).">New search for recipes</a>&nbsp;&nbsp;";        
+        ?>
+    
+     
  <table class="table">
  <tr>
      <th>Recipe Name</th>
@@ -54,7 +63,23 @@
  <tr>
      <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
      <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
-     <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>     
+     <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
+     <!--CVL9 ins view, edit, delete-->
+     <td>
+         <a href="<?php echo $this->url('recipe',
+             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
+         <?php
+            if($_SESSION['user'] != "") {                 
+            echo "&nbsp&nbsp<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite recipe</a>";                                           
+           //CVL9 ins edit / delete - only own recipes can be edited / deleted
+           if(strcmp($_SESSION['user'],$recipe->createUserID) == 0) { ?>
+             &nbsp&nbsp<a href="<?php echo $this->url('recipe',
+             array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
+             &nbsp&nbsp<a href="<?php echo $this->url('recipe',
+             array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+            <?php } ?>                              
+        <?php }?>  
+     </td>
  </tr>
  <?php endforeach; ?>
 
@@ -72,9 +97,12 @@
     echo $this->form()->openTag($form); 
     echo $this->formRow($form->get('searchTerm'));
     echo "<br>";
-    //CVL9 echo $this->formRow($form->get('duration'));
-    //CVL9 echo "<br>";
-    echo $this->formSubmit($form->get('submit'));    
+    echo $this->formRow($form->get('duration'));
+    echo "<br>";
+    echo $this->formSubmit($form->get('submit'));  
+    echo "<br>";
+    echo "<br>";
+    echo "Without recipe name or duration all recipes will be shown.";
     echo $this->form()->closeTag();     
     } 
 ?>         

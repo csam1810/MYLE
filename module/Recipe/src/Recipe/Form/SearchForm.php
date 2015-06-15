@@ -35,24 +35,25 @@ class SearchForm extends Form {
             'name' => 'searchTerm',
             'type' => 'Text',
             'options' => array(
-                'label' => 'recipe name',
+                'label' => 'recipe name contains',
             ),
             'attributes' => array(
                 'class' => 'form-control',
             )
         ));              
-        //CVL7
-       /*//CVL9  $this->add(array(
+        
+       //CVL9  
+       $this->add(array(
             'name' => 'duration',
             'type' => 'Text',
             'options' => array(
-                'label' => 'duration smaller than',
+                'label' => 'duration smaller or equal than (in minutes)',
             ),
             'attributes' => array(
                 'class' => 'form-control',
             )
         ));
-  */
+  
          $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',

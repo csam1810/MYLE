@@ -17,7 +17,8 @@ namespace Recipe\Model;
  {
 
      public $searchTerm;    
-     //CVL9 public $duration;    
+     public $duration; 
+     public $typeOfSearch; //ins CVL10
      
      protected $inputFilter;
 
@@ -25,7 +26,8 @@ namespace Recipe\Model;
      public function exchangeArray($data)
     {                  
          $this->searchTerm  = (!empty($data['searchTerm'])) ? $data['searchTerm'] : null;
-         //CVL9 $this->duration = (!empty($data['duration'])) ? $data['duration'] : null; //CVL7
+         $this->duration = (!empty($data['duration'])) ? $data['duration'] : null; //CVL7
+         $this->typeOfSearch = (!empty($data['typeOfSearch'])) ? $data['typeOfSearch'] : null; //CVL10
      }
      
      public function getArrayCopy()
@@ -41,7 +43,7 @@ namespace Recipe\Model;
              //CVL5, same length as recipeName
                 $inputFilter->add(array(
                  'name'     => 'searchTerm',
-                 'required' => true,           //CVL7, false? because only duration should be possible
+                 'required' => false,           
                  'filters'  => array(
                      array('name' => 'StripTags'),
                      array('name' => 'StringTrim'),
@@ -51,17 +53,20 @@ namespace Recipe\Model;
                          'name'    => 'StringLength',
                          'options' => array(
                              'encoding' => 'UTF-8',
-                             'min'      => 3,
+                             'min'      => 0,
                              'max'      => 255,
                          ),
                      ),
                  ),
              ));
-                /*//CVL9 
-                //CVL7 - same as in recipe
+                
+                //CVL10 - no output when not valid due to using same page for input and result of search
+                //CVL10 - validator that number has to be > 0, not negative
+                
+                //VL10 isInt is also availabel instead of GreaterThan
                   $inputFilter->add(array(
                  'name'     => 'duration',
-                 'required' => false,
+                 'required' => true,
                  'filters'  => array(
                      array('name' => 'Int'),
                  ),
@@ -75,7 +80,7 @@ namespace Recipe\Model;
                         )
                     ),
                 ),
-             ));*/
+             ));
                 
              
              $this->inputFilter = $inputFilter;
