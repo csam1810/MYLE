@@ -35,10 +35,11 @@ class SearchForm extends Form {
             'name' => 'searchTerm',
             'type' => 'Text',
             'options' => array(
-                'label' => 'recipe name contains',
+                'label' => 'recipe name contains',                
             ),
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-control',                
+                'size' => 31, //CVL11
             )
         ));              
         
@@ -50,7 +51,7 @@ class SearchForm extends Form {
                 'label' => 'duration smaller or equal than (in minutes)',
             ),
             'attributes' => array(
-                'class' => 'form-control',
+                'class' => 'form-control',                
             )
         ));
   

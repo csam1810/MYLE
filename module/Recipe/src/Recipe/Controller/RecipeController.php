@@ -214,7 +214,7 @@ class RecipeController extends AbstractActionController {
         }else{            
             if (strlen($searchTerm) > 0){ //if not mandatory incl min length >0
                 $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
-                $typeOfSearch = "for recipe name includes ".$searchTerm; //." length: ".strlen($searchTerm);
+                $typeOfSearch = "for recipe name includes '".$searchTerm."'"; //." length: ".strlen($searchTerm);
             }else{
                 //no diff in error messages for invalid or empty
                 $recipeEntities = $this->getRecipeTable()->fetchAll();
