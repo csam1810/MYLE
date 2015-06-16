@@ -14,73 +14,47 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><?php echo $this->translate('Our goal') ?></h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="height: 120px">
                 <p><?php echo sprintf($this->translate('Making the whole process of cooking easier.'), '<a href="http://framework.zend.com/wiki/display/ZFDEV2/Home">', '</a>', '<a href="http://framework.zend.com/zf2/blog">', '</a>', '<a href="https://github.com/zendframework/zf2/issues">', '</a>') ?></p>
-            <!--    <p><a class="btn btn-success pull-right" href="http://framework.zend.com/zf2" target="_blank"><?php echo $this->translate('ZF2 Development Portal') ?> &raquo;</a></p> -->
             </div>
         </div>
     </div>
-
+       
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php echo $this->translate('Project idea') ?></h3>
             </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('Finding new recipes, creating shopping lists, favoriting interesting recipes for later use and create your own recipes.'), '<a href="https://github.com/zendframework/modules.zendframework.com">', '</a>') ?></p>
-         <!--       <p><a class="btn btn-success pull-right" href="http://modules.zendframework.com/" target="_blank"><?php echo $this->translate('Explore ZF2 Modules') ?> &raquo;</a></p> -->
-            </div>
+            <div class="panel-body" style="height: 120px">
+                <p><?php echo 'Finding new recipes, creating shopping lists, favoriting interesting recipes for later use and create your own recipes.'; ?></p>
+       </div>
         </div>
     </div>
-
+    
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Requirements') ?></h3>
+                <h3 class="panel-title"><?php echo $this->translate('Narvigation') ?></h3>
             </div>
-            <div class="panel-body">
-                <p><?php echo 'In total we have 60 functional requirements and 10 non-functional requirements.'; ?></p>
-        <!--         <p><a class="btn btn-success pull-right" href="http://webchat.freenode.net?channels=zftalk" target="_blank"><?php echo $this->translate('Ping us on IRC') ?> &raquo;</a></p> -->
-            </div>
+            <div class="panel-body" style="height: 120px">
+                <p><a href="<?php echo $this->url('recipe', array('action'=>'index'));?>">Recipe</a> >> view all the recipes, Search for recipes, Add new recipe  or View favorite recipes.  
+                    <a href="<?php echo $this->url('list', array('action'=>'viewList'));?>">Favorites List</a> >> view your favorite recipes.
+                    <a href="<?php echo $this->url('login', array('action'=>'add'));?>">Login</a> >> Login or Create new account.
+        </div>
         </div>
     </div>
+ 
 </div>
 
 <div class="row">
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Technologies') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo 'PHP 5, Zend 2 Framework (MVC), Xampp.';?></p>
-            <!--    <p><a class="btn btn-success pull-right" href="http://framework.zend.com/zf2" target="_blank"><?php echo $this->translate('ZF2 Development Portal') ?> &raquo;</a></p> -->
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Testing and Usability') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo 'Unit testing framework: PHPUnit.';?></p>
-         <!--       <p><a class="btn btn-success pull-right" href="http://modules.zendframework.com/" target="_blank"><?php echo $this->translate('Explore ZF2 Modules') ?> &raquo;</a></p> -->
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
+      <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php echo $this->translate('About') ?></h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="height: 120px">
                 <p><?php echo 'Project for PS Web Engineering 2015.'; ?></p>
-        <!--         <p><a class="btn btn-success pull-right" href="http://webchat.freenode.net?channels=zftalk" target="_blank"><?php echo $this->translate('Ping us on IRC') ?> &raquo;</a></p> -->
-            </div>
+        </div>
         </div>
     </div>
 </div>
