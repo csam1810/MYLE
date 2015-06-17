@@ -146,6 +146,10 @@ return array(
                 ),
             ),
             array(
+                'label' => 'Search',
+                'route' => 'search',
+            ),
+            array(
                 'label' => 'Favorites List',
                 'route' => 'list',
                 'pages' => array(
@@ -172,6 +176,7 @@ return array(
                     ),
                 ),
             ),
+            
         ),
     ),
 );

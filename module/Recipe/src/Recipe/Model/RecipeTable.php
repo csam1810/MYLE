@@ -24,8 +24,11 @@ namespace Recipe\Model;
 
      public function fetchAll()
      {
-         $resultSet = $this->tableGateway->select();
-         return $resultSet;
+         $resultSet = $this->tableGateway->select(function($select) {
+            $select->order('createDate DESC');
+            // insert some awesome ordering magic here..!
+        });
+        return $resultSet;
      }
 
      public function getRecipe($recipeID)
