@@ -6,8 +6,7 @@
  * and open the template in the editor.
  */
 
-/**
- * CVL ins
+/** 
  * Description of ListDetail
  
  */
@@ -17,9 +16,7 @@ class ListDetail {
         
     public $listID;
     public $recipeID;
-    
-    //protected $inputFilter; //CVL necessary?
-    
+        
     //this method is needed to work with Zend's TableGateway class
      public function exchangeArray($data)
      {         

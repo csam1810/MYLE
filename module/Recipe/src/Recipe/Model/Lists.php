@@ -7,31 +7,24 @@
  */
 
 /**
- *  * CVL ins
- * Description of Lists (NOT LIST)
- * assumption createUserID is filled
- * TODO get all fields for display
+ * Description of Lists 
  */
  
 
-namespace Recipe\Model;
- use Zend\InputFilter\InputFilterAwareInterface;    //CVL necessary?
- use Zend\InputFilter\InputFilterInterface;         //CVL necessary?
- use Zend\InputFilter\InputFilter;                  //CVL necessary
-
+namespace Recipe\Model; 
 
 class Lists{
-    //class Lists implements InputFilterAwareInterface {    //CVL necessary
+    
     public $listID;
     public $createUserID;
-    public $listName;       //ins CVL2
-    public $listDescription;//ins CVL2
+    public $listName;  
+    public $listDescription;
     
     
     public function exchangeArray($data) {
         $this->listID           = (!empty($data['listID'])) ? $data['listID'] : null;
         $this->createUserID     = (!empty($data['createUserID'])) ? $data['createUserID'] : null;
-        $this->listName         = (!empty($data['listName'])) ? $data['listName'] : null;               //ins CVL2
-        $this->listDescription  = (!empty($data['listDescription'])) ? $data['listDescription'] : null; //ins CVL2
+        $this->listName         = (!empty($data['listName'])) ? $data['listName'] : null;              
+        $this->listDescription  = (!empty($data['listDescription'])) ? $data['listDescription'] : null;
     }
 }

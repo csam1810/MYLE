@@ -13,12 +13,12 @@ use Zend\View\Model\ViewModel;
 use Recipe\Model\Recipe;
 use Recipe\Model\IngredientsOfRecipe;
 use Recipe\Model\Ingredient;
-use Recipe\Model\Lists;                 //ins CVL
-use Recipe\Model\ListDetail;            //ins CVL
-use Recipe\Model\Search;                //ins CVL5
+use Recipe\Model\Lists;                 
+use Recipe\Model\ListDetail;            
+use Recipe\Model\Search;                
 use Zend\InputFilter\InputFilter;
 use Recipe\Form\CreateRecipeForm;
-use Recipe\Form\SearchForm;             //ins CVL5
+use Recipe\Form\SearchForm;             
 
 class RecipeController extends AbstractActionController {
 
@@ -27,8 +27,8 @@ class RecipeController extends AbstractActionController {
     protected $ingredientsOfRecipeTable;
     protected $weightUnitsTable;
     protected $difficultiesTable;
-    protected $listsTable;                     //ins CVL
-    protected $listDetailTable;                //ins CVL  
+    protected $listsTable;                     
+    protected $listDetailTable;                
     
 
     public function getDifficultiesTable() {
@@ -70,8 +70,7 @@ class RecipeController extends AbstractActionController {
         }
         return $this->recipeTable;
     }
-
-    //CVL ins
+    
     public function getListsTable() {
         if (!$this->listsTable) {
             $sm = $this->getServiceLocator();
@@ -80,7 +79,6 @@ class RecipeController extends AbstractActionController {
         return $this->listsTable;
     }
 
-    //CVL ins
     public function getListDetailTable() {
         if (!$this->listDetailTable) {
             $sm = $this->getServiceLocator();
@@ -173,14 +171,11 @@ class RecipeController extends AbstractActionController {
         return array('form' => $form);
     }
 
-    
-    
-    
-     //CVL5: search Form
+         
       public function searchAction()
       {          
          $form = new SearchForm();                                   
-         $form->get('submit')->setValue('show');//CVL7
+         $form->get('submit')->setValue('show');
          
          $request = $this->getRequest();
          
@@ -193,15 +188,13 @@ class RecipeController extends AbstractActionController {
              if ($form->isValid()) {                 
                  $search->exchangeArray($form->getData());                 
                  
-                 $searchTerm = $search->searchTerm;   ///CVL6 del
-                 $duration = $search->duration; //CVL7                              
+                 $searchTerm = $search->searchTerm;  
+                 $duration = $search->duration;                              
          
-                        
-        //CVL10     
-        //no mandatory values because fields can be empty
-        
-        $recipeEntities = NULL; //ins CVL10 working? 
-        $typeOfSearch = "Invalid search input!"; //ins CVL10
+                                 
+        //no mandatory values because fields can be empty        
+        $recipeEntities = NULL; 
+        $typeOfSearch = "Invalid search input!";
         if ($duration > 0){
             if (strlen($searchTerm) > 0){
                 $recipeEntities = $this->getRecipeTable()->getRecipeByNameAndDuration($searchTerm, $duration);
@@ -215,43 +208,20 @@ class RecipeController extends AbstractActionController {
             if (strlen($searchTerm) > 0){ //if not mandatory incl min length >0
                 $recipeEntities = $this->getRecipeTable()->getRecipeByName($searchTerm);        
                 $typeOfSearch = "for recipe name includes '".$searchTerm."'"; //." length: ".strlen($searchTerm);
-            }else{
-                //no diff in error messages for invalid or empty
+            }else{                
                 $recipeEntities = $this->getRecipeTable()->fetchAll();
-                $typeOfSearch = ": all recipes";
-               
-                
-                //CVL10 TODO TODO give back error messages if possible
-                //http://framework.zend.com/manual/current/en/modules/zend.validator.html
-                //If isValid() returns FALSE, the getMessages() returns an array of messages explaining the reason(s) for validation failure.
-               //foreach ($validator->getMessages() as $messageId => $message) {
-                //    echo "Validation failure '$messageId': $message\n";              
-//               }
-                //these methods available but returnMessages->getMessages() returns array
-                //but not usable!?
-                //
-                //CVL10 - not working!
-                /*$inputFilterTemp = $search->getInputFilter();
-                $errorMessages = $inputFilterTemp->getInvalidInput(); 
-                
-                foreach ($errorMessages as $errorMessage) {            
-                    //throw new \Exception("Invalid input: $errorMessage");            
-                    $typeOfSearch = $errorMessage;
-                    break;
-        }*/        
+                $typeOfSearch = ": all recipes";             
             }
         }
         
         //containers
         $recipes = array();
         $difficulties = array();
-        
-        //if ($recipeEntities != NULL){ //CVL10? helping?
+                
         foreach ($recipeEntities as $recipe) {
             $recipes[$recipe->recipeID] = $recipe;
             $difficulties[$recipe->recipeID] = $this->getDifficultiesTable()->getDifficultyName($recipe->difficultyID);
-        }
-        //}//CVL10 there has to be a return
+        }        
         
         return new ViewModel(array(
             'recipes' => $recipes, 'difficulties' => $difficulties, 'typeOfSearch' => $typeOfSearch 
@@ -387,28 +357,24 @@ class RecipeController extends AbstractActionController {
             'weightUnits' => $ingredientWeightUnits));
     }
 
-    //ins CVL 
     /**
      * A list is added to default list of user
      * If a user does not yet have a list, one will be created
      * Assumption: only 1 list for each user
      */
-    //asumption that user is logged in, ok because feature only available when logged-in
-    //TODO view recipe?
-    //TODO navigation back
+    //asumption that user is logged in, ok because feature only available when logged-in    
     public function addToListAction() {
         //get id of recipe which should be added to list
         $recipeID = (int) $this->params()->fromRoute('recipeID');
 
         //get default list of user
         if ($_SESSION['user'] != "") {
-            $userID = $_SESSION['user']; //assumption user is the userid  
+            $userID = $_SESSION['user'];
 
             $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
 
-            $listID = 0; //CVL3
-            //CVL2  
-            if ($list != null) { //create default list, ins CVL3
+            $listID = 0;            
+            if ($list != null) {
                 $listID = $list->listID;
             } else { //create default list
                 $listNew = new Lists();
@@ -423,33 +389,25 @@ class RecipeController extends AbstractActionController {
                 $listID = $this->getListsTable()->saveList($listNew);
             }
 
-            if ($listID > 0) { //CVL3                    
+            if ($listID > 0) {
                 //the user has now a list                                        
                 $listDetailNew = new ListDetail();
                 $listDetailNew->exchangeArray(array('listID' => $listID,
-                    'recipeID' => $recipeID)); //CVL3                   
-                //CVL3 - check if recipe is already in list is done in this function
-                $this->getListDetailTable()->saveListDetail($listDetailNew);
-
-                //CVL no validation, no info if actually inserted
-                //echo "<script>alert('Recipe added to favorite list!');</script>";
+                    'recipeID' => $recipeID));
+                // the check if recipe is already in list is done in this function
+                $this->getListDetailTable()->saveListDetail($listDetailNew);                
             } else {
                 //should not happen
                 throw new \Exception("Favorite Recipe - no list found for $userID");
             }
 
-            return $this->redirect()->toRoute('list', array('action' => 'viewList')); //CVL3 working with new entry?
-            //return $this->redirect()->toRoute('recipe', array('action' => 'index')); //CVL3
-        }//check if user is logged-in
+            return $this->redirect()->toRoute('list', array('action' => 'viewList'));            
+        }//check if user is logged-in}
     }
-
-//method end
-
-//CVL4 
     /**
      * Remove a recipe from a list
-     * Assumption: A user already  has a list
-     * Assumption: There is only 1 list
+     * Assumption: A user has exactly 1 list
+     * Assumption: function only available for logged-in user
      */
      public function removeFromListAction() {      
     
@@ -458,41 +416,37 @@ class RecipeController extends AbstractActionController {
 
         //get default list of user
         if ($_SESSION['user'] != "") {
-            $userID = $_SESSION['user']; //assumption user is the userid  
+            $userID = $_SESSION['user'];
 
-            $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
+            $list = $this->getListsTable()->getListsByUser($userID); //1 list                
 
             $listID = 0;
             if ($list == null) {
-                throw new \Exception("ERROR: Remove recipe $recipeID from list $listID - no list available");
-                //do nothing, not possible                
+                //should not happen
+                throw new \Exception("ERROR: Remove recipe $recipeID from list $listID - no list available");                
             } else { 
-                $listID = (int) $list->listID; 
-                                
+                $listID = (int) $list->listID;                                 
                     $this->getListDetailTable()->removeRecipeFromList($listID, $recipeID);                                  
             }
             
             //refresh current favorite list
-            return $this->redirect()->toRoute('list', array('action' => 'viewList')); //CVL3 working with new entry?
-            //return $this->redirect()->toRoute('recipe', array('action' => 'index')); //CVL3
+            return $this->redirect()->toRoute('list', array('action' => 'viewList'));
         }//check if user is logged-in
     }
     
-    /**
-     * CVL3 ins
+    /**     
      * view the recipes of a list
-     * only for logged-in user, feature on view is only provided for logged-in user
+     * only for logged-in user
      */
-    public function viewlistAction() {
-        //CVL3 TODO same code as above
+    public function viewlistAction() {        
         //get default list of user
         if ($_SESSION['user'] != "") {
-            $userID = $_SESSION['user']; //assumption user is the userid  
+            $userID = $_SESSION['user'];
 
             $list = $this->getListsTable()->getListsByUser($userID);    //1 list                
-            $listID = 0; //CVL3            
+            $listID = 0;
 
-            if ($list != null) { //create default list ins CVL3 
+            if ($list != null) {
                 $listID = $list->listID;
             } else {//create default list
                 $listNew = new Lists();
@@ -510,7 +464,6 @@ class RecipeController extends AbstractActionController {
             }
 
             if ($list != null) {
-
                 //the user has now a list 
                 //getListDetails
                 $listDetailEntities = $this->getListDetailTable()->getListDetailForList($list->listID);
@@ -538,5 +491,4 @@ class RecipeController extends AbstractActionController {
             ));
         } //check loggin / session
     }
-
 }

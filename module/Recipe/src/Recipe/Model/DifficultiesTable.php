@@ -40,8 +40,7 @@ class DifficultiesTable {
          $rowset = $this->tableGateway->select(array('difficultyID' => $difficultyID));
          $row = $rowset->current();
          if (!$row) {
-             throw new \Exception("Could not find name for difficulty name for key $difficultyID (DifficultiesTable)"); //CVL3
-             //throw new \Exception("Could not find row $difficultyID"); //CVL3
+             throw new \Exception("Could not find name for difficulty name for key $difficultyID (DifficultiesTable)");             
          }
          return $row;
      }

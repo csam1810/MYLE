@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//CVL5
+
 namespace Recipe\Model;
 
  use Zend\InputFilter\InputFilterAwareInterface;
@@ -18,29 +18,31 @@ namespace Recipe\Model;
 
      public $searchTerm;    
      public $duration; 
-     public $typeOfSearch; //ins CVL10
+     public $typeOfSearch;
      
      protected $inputFilter;
 
-     //AJ: this method is needed to work with Zend's TableGateway class
+     //this method is needed to work with Zend's TableGateway class
      public function exchangeArray($data)
     {                  
          $this->searchTerm  = (!empty($data['searchTerm'])) ? $data['searchTerm'] : null;
-         $this->duration = (!empty($data['duration'])) ? $data['duration'] : null; //CVL7
-         $this->typeOfSearch = (!empty($data['typeOfSearch'])) ? $data['typeOfSearch'] : null; //CVL10
+         $this->duration = (!empty($data['duration'])) ? $data['duration'] : null; 
+         $this->typeOfSearch = (!empty($data['typeOfSearch'])) ? $data['typeOfSearch'] : null;
      }
      
      public function getArrayCopy()
      {
          return get_object_vars($this);
      }
-
-//CVL8 min from 3 -> 0 in order to search only for duration as well
+    
+     /**
+      * no field in search is mandatory
+      */
     public function getInputFilter() {
          if (!$this->inputFilter) {
              $inputFilter = new InputFilter();            
     
-             //CVL5, same length as recipeName
+             //same length as recipeName
                 $inputFilter->add(array(
                  'name'     => 'searchTerm',
                  'required' => false,           
@@ -59,21 +61,16 @@ namespace Recipe\Model;
                      ),
                  ),
              ));
-                
-                //CVL10 - no output when not valid due to using same page for input and result of search
-                //CVL10 - validator that number has to be > 0, not negative
-                
-                //CVL10 isInt is also availabel instead of GreaterThan
+                                                
                   $inputFilter->add(array(
                  'name'     => 'duration',
-                 'required' => false, //CVL11 
+                 'required' => false,
                  'filters'  => array(
                      array('name' => 'Int'),
                  ),
                  'validators' => array(
-                    array(
-                        //'name' => 'GreaterThan', //del CVL11, should be greater than but then error if invalid
-                        'name' => 'isInt', //ins CVL11
+                    array(                        
+                        'name' => 'isInt',
                         'options' => array(
                             'min' => 0,
                             'inclusive' => false,

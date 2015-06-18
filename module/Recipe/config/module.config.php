@@ -11,7 +11,7 @@
          'invokables' => array(
              'Recipe\Controller\Recipe' => 'Recipe\Controller\RecipeController',
              'DifficultyFieldset' => 'Recipe\Form\DifficultyFieldset',
-             'Recipe\Controller\List' => 'Recipe\Controller\RecipeController', //ins CVL3 ???
+             'Recipe\Controller\List' => 'Recipe\Controller\RecipeController',
          ),
      ),
      
@@ -32,7 +32,6 @@
                      ),
                  ),
              ),
-//CVL 4 ins, path now changed for normal list from list to list/view-list
              'list' => array(
                  'type'    => 'segment',
                  'options' => array(
@@ -46,19 +45,7 @@
                          'action'     => 'view-list',
                      ),
                  ),
-             ),
-             /* CVL4 del
-              'list' => array(
-                 'type'    => 'literal',
-                 'options' => array(
-                     'route'    => '/list',                                        
-                     'defaults' => array(
-                         'controller' => 'Recipe\Controller\Recipe',
-                         'action'     => 'view-list',                     
-                 ),
-             ),
-         ),*/ 
-//CVL5             
+             ),                  
               'search' => array(
                  'type'    => 'segment',
                  'options' => array(

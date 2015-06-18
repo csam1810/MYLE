@@ -8,28 +8,17 @@
 
 
 /**
- * Description of list with listdetails
- *
- * CVL3
- * 
+ * Description of list with listdetails 
  */
-//TODO use index.phtml? right now list propteries are not relevant anyway, title need to be diff
-//loggin is prerequisite to access this page
-if(strcmp($_SESSION['user'], "") != 0) {
- //CVL3 - should the displayname be shwon? -> @Daly how to access that
+//assumption only logged-in user can use this feature
+if(strcmp($_SESSION['user'], "") != 0) { 
  $user = $_SESSION['user']; 
- $title = 'Favorite Recipes of '.$user;
+ $title = 'Favorite Recipes';
  $this->headTitle($title);
 
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
   
- 
- <!--CVL3 - listinfos missing, not relevant because default values-->
- <!--p>
- <!--?php echo $this->escapeHtml("Listname: ".$list->listName);?-->
- <!--?php echo $this->escapeHtml("Listdescription: ".$list->listDescription);?-->
- <!--/p-->
  
  <table class="table">
  <tr>
@@ -43,8 +32,7 @@ if(strcmp($_SESSION['user'], "") != 0) {
      <td><?php echo $this->escapeHtml($recipe->recipeName);?></td>
      <td><?php echo $this->escapeHtml($recipe->duration." minutes");?></td>
      <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
-     <td>
-         <!--CVL4-->
+     <td>         
          <a href="<?php echo $this->url('list',
              array('action'=>'removeFromList', 'recipeID' => $recipe->recipeID));?>">remove from list </a>
      </td>

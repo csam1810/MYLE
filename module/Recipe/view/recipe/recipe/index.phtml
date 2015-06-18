@@ -9,14 +9,13 @@
  <p>
      <?php echo $this->navigation()->breadcrumbs()->render(); ?>
      
-     <!--CVL5 for all user-->      
+     <!--feature is available for all user-->      
       <?php echo "<a href=".$this->url('search', array('action'=>'search' )).">Search for recipes</a>&nbsp;&nbsp;";
       ?>      
          
      <?php
      if(strcmp($_SESSION['user'],"") != 0) {
-        echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>&nbsp;&nbsp;";
-         //CVL3 ins        
+        echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>&nbsp;&nbsp;";               
         echo "<a href=".$this->url('list', array('action'=>'viewList')).">View favorite recipes</a>&nbsp;&nbsp;";
            
         if(@$_POST['showMyOwnRecipes']){
@@ -53,8 +52,7 @@
      <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
      <td>
          <a href="<?php echo $this->url('recipe',
-             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
-         <!--CVL there should be some space -->
+             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>         
     <?php
             if($_SESSION['user'] != "") {                            
             echo "&nbsp <a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite this recipe</a>";                                  
@@ -78,8 +76,7 @@
      <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
      <td>
          <a href="<?php echo $this->url('recipe',
-             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
-         <!--CVL there should be some space -->
+             array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>         
          <?php
             if($_SESSION['user'] != "") {                 
             echo "&nbsp&nbsp<a href=".$this->url('recipe', array('action'=>'addToList', 'recipeID' => $recipe->recipeID)).">Favorite this recipe</a>";                        

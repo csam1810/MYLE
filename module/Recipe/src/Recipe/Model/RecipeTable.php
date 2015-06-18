@@ -10,8 +10,8 @@ namespace Recipe\Model;
 
  use Zend\Db\TableGateway\TableGateway;
  use Zend\Db\TableGateway\AbstractTableGateway;
- use Zend\Db\Adapter\Driver\ResultInterface;    //ins CVL6
- use Zend\Db\ResultSet\ResultSet;                //ins CVL6
+ use Zend\Db\Adapter\Driver\ResultInterface;
+ use Zend\Db\ResultSet\ResultSet;           
 
  class RecipeTable extends AbstractTableGateway
  {
@@ -42,61 +42,25 @@ namespace Recipe\Model;
          return $row;
      }
      
-     /*CV: ins 
-      * get recipes by name
-      * result can be >=0 => set of recipes
-      * search for recipes where searchTerm is substring of recipeName      
-        "SELECT * FROM student WHERE name LIKE '%John%'";    
-     //CVL5*/
-    
+     /** 
+      * get recipes which name have the searchTerm included
+      * result can be more than 1 recipe
+      */    
       public function getRecipeByName($searchTerm)
      {
-      
-         //search exactly by name, obsolet
-         //$rowset = $this->tableGateway->select(array('recipeName' => $searchTerm)); 
-         
-        //begin of ins CVL6
-         $db = getAdapter();
-         //is working: $statement = $db->createStatement("SELECT * FROM Recipe WHERE recipeName='" . $searchTerm . "'");         
+              
+         $db = getAdapter();      
          $statement = $db->createStatement("SELECT * FROM Recipe WHERE recipeName LIKE '%".$searchTerm."%'");
          $result = $statement->execute();
          $rowset = new ResultSet;
-         $rowset->initialize($result);
-         
-         //alternative but adapter missing
-         //http://framework.zend.com/manual/current/en/modules/zend.db.sql.html         
-          
-         //source https://samsonasik.wordpress.com/2013/01/15/zend-framework-2-cheat-sheet-zenddb/
-      //$rowset = $this->select(function (Sql\Select $select) use ($searchTerm) {                          
-          
-       //like... 
-       //$select->where->like('recipeName', "%$searchTerm%");
-       
-       //between
-       //$select->where->between('id', 2, 5); //identifier,min,max
-   
-       //NEST
-       //$select->where
-       //             ->AND->NEST->like('firstname', "%$keyword%")
-       //             ->OR->like('lastname', "%$keyword%");
-        
-      //if you will work with
-      //'native' expression, use Sql\Expression
-      //$select->where->notequalTo('name', new Sql\Expression('all(select name from othertableagain)'));     
-      //or use predicate...
-      //$select->where
-       //     ->addPredicate(new Sql\Predicate\Expression('LOWER(user_name) = ?',
-       //                         strtolower($name)));    
-    
-//});
-    //end of ins CVL6
-                  
+         $rowset->initialize($result);                                    
          return $rowset;         
      }
      
      
-     //CVL7
-     //duration smaller than
+     /**
+      *get recipes which have a duration smaller than or equal the given value
+      */
      public function getRecipeByDuration($duration)
      {
          $db = getAdapter();         
@@ -107,9 +71,11 @@ namespace Recipe\Model;
                
          return $rowset;         
      }
-     
-     //CVL7
-     //search for recipe name and duration smaller equal than
+          
+     /**
+      * get recipes which have a name where the searchTerm is a substring 
+      * and duration of recipe is smaller than or equal the given value
+      */
      public function getRecipeByNameAndDuration($searchTerm, $duration)
      {
          $db = getAdapter();         
@@ -120,7 +86,10 @@ namespace Recipe\Model;
                
          return $rowset;         
      }
-
+     
+    /**
+     * Save a given recipe to database
+     */
      public function saveRecipe(Recipe $recipe)
      {
          $data = array(
@@ -147,6 +116,9 @@ namespace Recipe\Model;
          return $id;
      }
 
+     /**
+      * delete a recipe in database with given recipeID
+      */
      public function deleteRecipe($recipeID)
      {
          $this->tableGateway->delete(array('recipeID' => (int) $recipeID));
