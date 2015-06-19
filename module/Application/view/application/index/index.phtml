@@ -4,7 +4,7 @@
        echo 'Cooking is exhausting, but thinking of what to cook and what ingredients to buy is even more exhausting!';
        ?>
        <a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">
-    <p><a class="btn btn-success btn-lg" href="<?php echo $this->url('recipe', array('action'=>'index'));?>">Go to View all the recipes >></a></p>
+    <p><a class="btn btn-success btn-lg" href="<?php echo $this->url('recipe', array('action'=>'index'));?>">Go to all the recipes >></a></p>
 </div>
 
 <div class="row">
@@ -34,27 +34,14 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Narvigation') ?></h3>
+                <h3 class="panel-title"><?php echo $this->translate('Navigation') ?></h3>
             </div>
             <div class="panel-body" style="height: 120px">
                 <p><a href="<?php echo $this->url('recipe', array('action'=>'index'));?>">Recipe</a> >> view all the recipes, Search for recipes, Add new recipe  or View favorite recipes.  
-                    <a href="<?php echo $this->url('list', array('action'=>'viewList'));?>">Favorites List</a> >> view your favorite recipes.
-                    <a href="<?php echo $this->url('login', array('action'=>'add'));?>">Login</a> >> Login or Create new account.
+                <p><a href="<?php echo $this->url('list', array('action'=>'viewList'));?>">Favorites List</a> >> view your favorite recipes.
+                <p><a href="<?php echo $this->url('login', array('action'=>'add'));?>">Login</a> >> Login or Create new account.
         </div>
         </div>
     </div>
  
-</div>
-
-<div class="row">
-      <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('About') ?></h3>
-            </div>
-            <div class="panel-body" style="height: 120px">
-                <p><?php echo 'Project for PS Web Engineering 2015.'; ?></p>
-        </div>
-        </div>
-    </div>
 </div>

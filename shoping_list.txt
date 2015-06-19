@@ -1,4 +1,0 @@
-recipe 1
-
-Ingredient:
-Tomato	5g
