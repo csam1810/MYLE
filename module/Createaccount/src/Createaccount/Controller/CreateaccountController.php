@@ -41,7 +41,6 @@
      {
          $form = new CreateaccountForm();
          $form->get('createAccountsubmit')->setValue('Submit');
-
          $request = $this->getRequest();
          if ($request->isPost()) {
              $createAccount = new Createaccount();
@@ -62,7 +61,8 @@
                       }
                  }
                  if(strcmp($p,$rp)==0){
-                    executeQuery("INSERT INTO User(userID, displayName, phoneNo, password) VALUES ('" . $uid . "','" . $dn . "','" . $pn . "','" . $p . "')");
+                    $str= "INSERT INTO User(userID, displayName, phoneNo, password) VALUES ('";
+                    executeQuery($str . $uid . "','" . $dn . "','" . $pn . "','" . $p . "')");
                     echo "<script>alert('User successfully created!');</script>";
                     login($uid);
                     return $this->redirect()->toRoute('recipe', array('action' => 'index'));

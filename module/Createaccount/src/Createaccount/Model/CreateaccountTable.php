@@ -25,10 +25,9 @@ namespace Createaccount\Model;
          return $resultSet;
      }
 
-     public function getCreateAccount($id)
+     public function getUser($id)
      {
-       //  $id  = (string) $id;
-         $rowset = $this->tableGateway->select(array('ID' => $id));
+         $rowset = $this->tableGateway->select(array('userID' => $id));
          $row = $rowset->current();
          if (!$row) {
              throw new \Exception("Could not find row $id");
@@ -36,27 +35,18 @@ namespace Createaccount\Model;
          return $row;
      }
 
-     public function saveCreateAccount(Createaccount $createAccount)
+     public function saveCreateAccount(Createaccount $user)
      {
          $data = array(
-             'userID' => $createAccount->id,
-             'displayName'  => $createAccount->displayName,
-             'phoneNo' => $createAccount->phoneNo,
-             'password'  => $createAccount->password,
+             'userID' => $user->id,
+             'displayName'  => $user->displayName,
+             'phoneNo' => $user->phoneNo,
+             'password'  => $user->password,
          );
 
-         $id = $createAccount->id;
-    /*     if ($id == '') {
-             $this->tableGateway->insert($data);
-         } else {
-             if ($this->getCreateAccount($id)) {
-                 $this->tableGateway->update($data, array('ID' => $id));
-             } else {
-                 throw new \Exception('User id does not exist');
-             }
-         }
-      */
-         $userRowData = getCreateAccount($id);
+         $id = $user->id;
+         $userRowData = $this->getUser($id);
+         
          if($userRowData !=null){
               echo "User id does exist";
               return $this->redirect()->toRoute('createaccount', array('action' => 'add'));

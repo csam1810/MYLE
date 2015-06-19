@@ -39,7 +39,7 @@ namespace Createaccount;
          return array(
              'factories' => array(
                  'Createaccount\Model\CreateaccountTable' =>  function($sm) {
-                     $tableGateway = $sm->get('CreateAccountTableGateway');
+                     $tableGateway = $sm->get('CreateaccountTableGateway');
                      $table = new CreateaccountTable($tableGateway);
                      return $table;
                  },

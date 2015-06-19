@@ -77,7 +77,7 @@ if(@$_POST['downloadRe']||@$_POST['downloadSh']){
         $contents=$recipe->recipeName . "\r\n".
                   "\r\nIngredient:" . 
                   $myIngredient . "\r\n";
-        $file ="shoping_list.txt";
+        $file ="shopping_list.txt";
     }
     $handle = fopen($file, "w");
     fwrite($handle, $contents);
