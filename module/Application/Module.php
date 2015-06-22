@@ -25,8 +25,14 @@ class Module
         $serviceManager = $application->getServiceManager();
         if (strcmp($_SESSION['user'], "") == 0) {
             $container = $serviceManager ->get('navigation');
-            $logoutPage = $container->findBy('route' , 'list');
-            $container->removePage($logoutPage);
+            $list = $container->findBy('route' , 'list');
+            $container->removePage($list);
+        } else {
+            $container = $serviceManager ->get('navigation');
+            $loginPage = $container->findBy('route' , 'login');
+            $container->removePage($loginPage);
+            $view = $container->findBy('route', 'recipe');
+            $container->addPage($view);
         }
     }
 

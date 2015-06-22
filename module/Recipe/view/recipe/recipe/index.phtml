@@ -15,18 +15,20 @@
          
      <?php
      if(strcmp($_SESSION['user'],"") != 0) {
-        echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>&nbsp;&nbsp;";               
+        echo "<a href=".$this->url('recipe', array('action'=>'createRecipe')).">Add new recipe</a>&nbsp;&nbsp;";   
+        echo "<a href=".$this->url('recipe', array('action'=>'createNewIngredient')).">Create a new ingredient</a>&nbsp;&nbsp;";
         echo "<a href=".$this->url('list', array('action'=>'viewList')).">View favorite recipes</a>&nbsp;&nbsp;";
+        
            
         if(@$_POST['showMyOwnRecipes']){
         ?>    
         
-            <form action="" method="POST" style="position: relative;top: -30px; left: 370px;">
+            <form action="" method="POST" style="position: relative;top: -30px; left: 530px;">
                 <input type="submit" name="showMyAllRecipes" Value="Show all recipes" style="background-color: transparent;color: #428bca;border: none;" onmouseover="this.style.textDecoration='underline';this.style.color='#483D8B'" onmouseout="this.style.textDecoration='none'; this.style.color='#428bca'">
             </form>
         <?php }
         else{ ?>
-            <form action="" method="POST" style="position: relative;top: -30px; left: 370px;">
+            <form action="" method="POST" style="position: relative;top: -30px; left: 530px;">
                   <input type="submit" name="showMyOwnRecipes" Value="Show my own recipes" style="background-color: transparent;color: #428bca;border: none;" onmouseover="this.style.textDecoration='underline';this.style.color='#483D8B'" onmouseout="this.style.textDecoration='none'; this.style.color='#428bca'">
             </form>
             

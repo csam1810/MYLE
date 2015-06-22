@@ -34,6 +34,18 @@ namespace Recipe\Model;
          }
          return $row->ingredientName;
      }
+     
+     //used to check if ingredient already exists
+     public function doesIngredientExist($ingredientName)
+     {
+         $rowset = $this->tableGateway->select(array('ingredientName' => $ingredientName));
+         $row = $rowset->current();
+         if (!$row) {
+             return false;
+         } else {
+             return true;
+         }
+     }
 
      public function saveIngredient(Ingredient $ingredient)
      {
@@ -44,7 +56,12 @@ namespace Recipe\Model;
 
          $id = (int) $ingredient->ingredientID;
          if ($id == 0) {
-             $this->tableGateway->insert($data);
+             if($this->doesIngredientExist($ingredient->ingredientName)) {
+                 return false;
+             } else {
+                $this->tableGateway->insert($data);
+                return true;
+             }
          } else {
              if ($this->getIngredient($id)) {
                  $this->tableGateway->update($data, array('ingredientID' => $ingredientID));

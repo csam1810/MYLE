@@ -135,10 +135,7 @@ class RecipeController extends AbstractActionController {
 
                 return $this->redirect()->toRoute('recipe', array('action' => 'detailedView', 'recipeID' => $id));
             } else {
-                echo "recipe is not valid!";
-                $recipe->exchangeArray($form->getData());
-                $recipe->difficultyID = $recipe->difficultyID['difficultyID'];
-                $this->printRecipe($recipe);
+                
             }
         } else {
             //echo "recipe is not valid!";
@@ -161,8 +158,12 @@ class RecipeController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $ingredient->exchangeArray($form->getData());
-                $this->getIngredientTable()->saveIngredient($ingredient);
-                return $this->redirect()->toRoute('recipe', array('action' => 'createRecipe'));
+                $success = $this->getIngredientTable()->saveIngredient($ingredient);
+                if($success) {
+                    return $this->redirect()->toRoute('recipe', array('action' => 'index'));
+                } else {
+                    echo "<script>alert('This ingredient already exists!');</script>";
+                }
             }
         } else {
             //echo "recipe is not valid!";
