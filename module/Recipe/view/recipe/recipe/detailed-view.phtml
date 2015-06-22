@@ -35,7 +35,7 @@
         
      </tr>
  <?php 
-         $myIngredient .= "\r\n".$ingredientNames[$ingredient->ingredientID] . "\t" . $ingredient->amount ."". $ingredient->weightUnitID;
+         $myIngredient .= "\r\n".$ingredientNames[$ingredient->ingredientID] . "\t" . $ingredient->amount ." ". $weightUnits[$ingredient->weightUnitID];
       endforeach; ?>
  </table>
  
