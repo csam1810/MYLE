@@ -55,7 +55,7 @@ namespace Createaccount\Model;
                          'options' => array(
                              'encoding' => 'UTF-8',
                              'min'      => 1,
-                             'max'      => 100,
+                             'max'      => 50,
                          ),
                      ),
                  ),
@@ -75,7 +75,7 @@ namespace Createaccount\Model;
                          'options' => array(
                              'encoding' => 'UTF-8',
                              'min'      => 1,
-                             'max'      => 100,
+                             'max'      => 25,
                          ),
                      ),
                  ),
@@ -94,7 +94,7 @@ namespace Createaccount\Model;
                          'options' => array(
                              'encoding' => 'UTF-8',
                              'min'      => 1,
-                             'max'      => 100,
+                             'max'      => 25,
                          ),
                      ),
                  ),
@@ -113,7 +113,7 @@ namespace Createaccount\Model;
                          'options' => array(
                              'encoding' => 'UTF-8',
                              'min'      => 1,
-                             'max'      => 100,
+                             'max'      => 15,
                          ),
                      ),
                  ),
@@ -132,7 +132,7 @@ namespace Createaccount\Model;
                          'options' => array(
                              'encoding' => 'UTF-8',
                              'min'      => 1,
-                             'max'      => 100,
+                             'max'      => 15,
                          ),
                      ),
                  ),
