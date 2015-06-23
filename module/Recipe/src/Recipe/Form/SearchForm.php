@@ -27,7 +27,7 @@ class SearchForm extends Form {
             'name' => 'searchTerm',
             'type' => 'Text',
             'options' => array(
-                'label' => 'recipe name contains',                
+                'label' => 'Recipe name contains',                
             ),
             'attributes' => array(
                 'class' => 'form-control',                
@@ -39,7 +39,7 @@ class SearchForm extends Form {
             'name' => 'duration',
             'type' => 'Text',
             'options' => array(
-                'label' => 'duration smaller or equal than (in minutes)',
+                'label' => 'Duration smaller or equal than (in minutes)',
             ),
             'attributes' => array(
                 'class' => 'form-control',                
@@ -50,7 +50,7 @@ class SearchForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'show',
+                'value' => 'Show',
                 'id' => 'submitbutton',
             ),
         ));

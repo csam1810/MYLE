@@ -176,7 +176,7 @@ class RecipeController extends AbstractActionController {
       public function searchAction()
       {          
          $form = new SearchForm();                                   
-         $form->get('submit')->setValue('show');
+         $form->get('submit')->setValue('Show');
          
          $request = $this->getRequest();
          
