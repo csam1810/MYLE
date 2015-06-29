@@ -34,8 +34,20 @@ if(strcmp($_SESSION['user'], "") != 0) {
      <td><?php echo $this->escapeHtml($difficulties[$recipe->recipeID]);?></td>
      <td>         
          <a href="<?php echo $this->url('list',
-             array('action'=>'removeFromList', 'recipeID' => $recipe->recipeID));?>">Remove from list </a>
-     </td>
+             array('action'=>'removeFromList', 'recipeID' => $recipe->recipeID));?>">Remove from list </a>    
+            &nbsp&nbsp<a href="<?php echo $this->url('recipe',
+                array('action'=>'detailedView', 'recipeID' => $recipe->recipeID));?>">View</a>
+            <?php
+               if($_SESSION['user'] != "") {                                
+              //only own recipes can be edited / deleted
+              if(strcmp($_SESSION['user'],$recipe->createUserID) == 0) { ?>
+                &nbsp&nbsp<a href="<?php echo $this->url('recipe',
+                array('action'=>'edit', 'recipeID' => $recipe->recipeID));?>">Edit</a>
+                &nbsp&nbsp<a href="<?php echo $this->url('recipe',
+                array('action'=>'delete', 'recipeID' => $recipe->recipeID));?>">Delete</a>
+               <?php } ?>                              
+           <?php }?>  
+        </td>
  </tr>
  <?php endforeach; ?>
  </table>
